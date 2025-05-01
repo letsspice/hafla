@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # Allow models to have slugs
 module Sluggable
   extend ActiveSupport::Concern
