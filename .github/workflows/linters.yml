@@ -19,7 +19,7 @@ jobs:
         run: |
           bundle install --jobs 4 --retry 3
       - name: Rubocop Report
-        run: rubocop --color
+        run: bundle exec rubocop --color
   nodechecker:
     name: node_modules checker
     runs-on: ubuntu-22.04
