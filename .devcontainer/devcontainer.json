@@ -1,0 +1,15 @@
+{
+  "name": "Hafla Dev",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "web",
+  "workspaceFolder": "/rails",
+  "extensions": [
+    "rebornix.Ruby",
+    "bung87.rails",
+    "ms-azuretools.vscode-docker",
+    "esbenp.prettier-vscode"
+  ],
+  "forwardPorts": [3000],
+  "postCreateCommand": "bundle install && yarn install && bin/rails db:prepare",
+  "remoteUser": "rails"
+}
