@@ -54,10 +54,10 @@ To get a local copy of the project and run it on your machine:
 To set up the database:
 
 1. Create a `.env` file at the root of the project and add your database credentials(below are examples):
-   ```bash
+   ``
    DATABASE_USERNAME=nemwel
    DATABASE_PASSWORD=root
-  ```
+  ``
 
 ## Set up PostgreSQL roles:
 To set up the roles:
@@ -89,6 +89,52 @@ To set up the roles:
 2. ``rubocop -A``
 
 Have fun with TDD!
+
+## 🐳 Developing with Dev Containers (VS Code)
+
+This project supports [Dev Containers](https://code.visualstudio.com/docs/devcontainers/containers) to provide a consistent, containerized development environment using Docker and Visual Studio Code.
+
+### 📦 Requirements
+
+- [Docker](https://www.docker.com/)
+- [Visual Studio Code](https://code.visualstudio.com/)
+- [Dev Containers Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+
+---
+
+### 🚀 Getting Started
+
+1. **Open the Project in VS Code**
+
+   Open the project folder in VS Code. If you have the Dev Containers extension installed, it will prompt:
+
+   > "Reopen in Container"
+
+   Click that, or manually open the Command Palette (`Cmd/Ctrl + Shift + P`) and run:
+
+
+2. **Initial Setup**
+
+The container will automatically:
+
+- Install Ruby, Node.js (if configured), and system libraries
+- Install all gems using `bundle install`
+- Set up your Rails environment
+
+3. **Run the Rails App**
+
+After the container is ready:
+
+```bash
+bin/setup
+bin/rails db:create db:migrate
+bin/rails server -b 0.0.0.0
+
+3. **Access the Application**
+
+Open your browser at: ```http://localhost:3000```
+
+
 
 ## Authors
 
