@@ -18,7 +18,7 @@ gem 'rails', '~> 7.1.5', '>= 7.1.5.1'
 gem 'rubocop', '1.75.3'
 gem 'sprockets-rails', '3.5.2'
 gem 'stimulus-rails', '1.3.4'
-gem 'tailwindcss-rails', '4.2.2'
+gem 'tailwindcss-rails', '~> 2.6'
 gem 'turbo-rails', '2.0.13'
 gem 'tzinfo-data', platforms: %i[windows jruby]
 
