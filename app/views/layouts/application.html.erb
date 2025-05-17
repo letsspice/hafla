@@ -13,10 +13,13 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <main class="">
-      <p class="notice"><%= notice %></p>
-      <p class="alert"><%= alert %></p>
+  <body data-controller="main">
+    <main class="bg-gray-50">
+      <% unless flash.empty? %>
+        <div id="flash" data-main-target="flash">
+          <%= render 'layouts/flash' %>
+        </div>
+      <% end %>
       <%= yield %>
     </main>
   </body>
