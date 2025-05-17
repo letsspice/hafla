@@ -13,6 +13,11 @@ module.exports = {
         sans: ['Inter var', ...defaultTheme.fontFamily.sans],
         geist: ['"Geist", sans-serif'],
       },
+      colors: {
+        primary: "#4318FF",
+        secondary: "#868CFF",
+        accent: "#2B3674"
+      }
     },
   },
   plugins: [
