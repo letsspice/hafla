@@ -39,5 +39,15 @@ class User < ApplicationRecord
   has_many :organizations, dependent: :destroy
 
   # enums
-  enum role: { user: 0, org_admin: 1, super_admin: 2 }
+  enum role: { org_admin: 0, user: 1, super_admin: 2 }
+
+  # instance methods
+
+  def active_for_authentication?
+    super || !confirmed?
+  end
+
+  def inactive_message
+    confirmed? ? super : :unconfirmed
+  end
 end
