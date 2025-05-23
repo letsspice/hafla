@@ -1,0 +1,2 @@
+class OrganizationProfilesController < ApplicationController
+end
