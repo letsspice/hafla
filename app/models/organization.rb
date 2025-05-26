@@ -24,10 +24,12 @@ class Organization < ApplicationRecord
   include Sluggable
 
   # class methods
-  friendly_slug_scope to_slug :name
+  friendly_slug_scope to_slug: :name
 
   # associations
   belongs_to :user
+  has_one :organization_profile, dependent: :destroy
+  accepts_nested_attributes_for :organization_profile
 
   # validations
   validates :name, presence: true, uniqueness: { scope: :user_id }

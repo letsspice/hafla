@@ -24,4 +24,11 @@ class OrganizationProfile < ApplicationRecord
 
   # associations
   belongs_to :organization
+
+  # validations
+  validates :city, presence: true
+  validates :country, presence: true
+  validates :currency, presence: true
+  validates :phone, presence: true, format: { with: /\A\d{10}\z/ }
+  validates :timezone, presence: true
 end
