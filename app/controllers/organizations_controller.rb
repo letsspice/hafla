@@ -1,15 +1,16 @@
 class OrganizationsController < ApplicationController
   def new
-    @organization = Organization.new
-    @organization.build_organization_profile
+    @organization = current_user.organizations.new
   end
 
   def create
-    @organization = Organization.new(organization_params)
-    if @organization.save
-      redirect_to @organization, notice: 'Organization created successfully.'
-    else
-      render :new, status: :unprocessable_entity
+    @organization = current_user.organizations.new(organization_params)
+    respond_to do |format|
+      if @organization.save
+        format.html { redirect_to @organization, notice: 'Organization created successfully.' }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -18,7 +19,7 @@ class OrganizationsController < ApplicationController
   def organization_params
     params.require(:organization).permit(
       :name,
-      organization_profile_attributes: [:city, :country, :currency, :phone, :timezone]
+      organization_profile_attributes: [:city, :country, :currency, :phone, :timezone, :phone_code]
     )
   end
 end

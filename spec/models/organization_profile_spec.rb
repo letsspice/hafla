@@ -7,6 +7,7 @@
 #  country         :string           not null
 #  currency        :string           not null
 #  phone           :string           not null
+#  phone_code      :string           not null
 #  timezone        :string           not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null

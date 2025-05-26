@@ -7,6 +7,7 @@
 #  country         :string           not null
 #  currency        :string           not null
 #  phone           :string           not null
+#  phone_code      :string           not null
 #  timezone        :string           not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
@@ -29,6 +30,7 @@ class OrganizationProfile < ApplicationRecord
   validates :city, presence: true
   validates :country, presence: true
   validates :currency, presence: true
-  validates :phone, presence: true, format: { with: /\A\d{10}\z/ }
+  validates :phone_code, presence: true
+  validates :phone, presence: true, format: { with: /\A\d{10}\z/ }, uniqueness: { scope: :phone_code }
   validates :timezone, presence: true
 end
