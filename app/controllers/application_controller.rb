@@ -10,7 +10,6 @@ class ApplicationController < ActionController::Base
   end
 
   def admin_request?
-    byebug
     request.subdomain.blank? || request.subdomain == 'www'
   end
 

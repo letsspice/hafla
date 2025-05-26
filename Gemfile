@@ -4,6 +4,8 @@ ruby '3.2.2'
 
 # General gems
 gem 'bootsnap', '1.18.4', require: false
+gem 'countries', '~> 7.1', '>= 7.1.1'
+gem 'currencies', '~> 0.4.2'
 gem 'devise', '4.9.4'
 gem 'dotenv-rails', '3.1.8'
 gem 'font-awesome-sass', '~> 6.5', '>= 6.5.2'
