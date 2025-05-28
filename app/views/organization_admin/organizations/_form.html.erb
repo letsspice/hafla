@@ -1,5 +1,5 @@
 <div class="p-6 md:pt-0 pt-4" data-controller="location"> 
-  <%= form_for @organization do |f| %>
+  <%= form_for [:organization_admin, @organization] do |f| %>
     <%= render 'shared/errors', object: f.object %>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
