@@ -43,18 +43,18 @@ export default class extends Controller {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ country: countryName })
-      })
+      });
   
-      const data = await res.json()
-      const cities = data.data || []
-  
+      const data = await res.json();
+      const cities = (data.data || []).sort((a, b) => a.localeCompare(b));
       this.cityTarget.innerHTML = cities.map(city =>
         `<option value="${city}">${city}</option>`
-      ).join("")
+      ).join("");
     } catch (err) {
-      console.warn("Fetching cities failed", err)
+      console.warn("Fetching cities failed", err);
     }
   }
+  
 
   async fetchCurrencies(countryName) {
     try {

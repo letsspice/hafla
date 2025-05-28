@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
   end
 
   def ensure_organization_profile_complete
-    return if devise_controller? || request.path == new_organization_path || request.path == destroy_user_session_path
+    return if devise_controller? || request.path == new_organization_path || request.path == destroy_user_session_path || (controller_name == 'organizations' && action_name == 'create')
     return unless current_user.organizations.empty?
 
     redirect_to new_organization_path, alert: 'Please complete your organization profile to continue.'

@@ -31,6 +31,17 @@ class OrganizationProfile < ApplicationRecord
   validates :country, presence: true
   validates :currency, presence: true
   validates :phone_code, presence: true
-  validates :phone, presence: true, format: { with: /\A\d{10}\z/ }, uniqueness: { scope: :phone_code }
+  validates :phone, presence: true,
+                    format: { with: /\A\d{7,15}\z/, message: "must be between 7 and 15 digits" },
+                    uniqueness: { scope: :phone_code }
   validates :timezone, presence: true
+
+  # callbacks
+  before_validation :normalize_phone
+
+  private
+
+  def normalize_phone
+    self.phone = phone.gsub(/\D/, '') if phone.present?
+  end
 end

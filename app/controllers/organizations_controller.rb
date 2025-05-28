@@ -1,10 +1,11 @@
 class OrganizationsController < ApplicationController
   def new
-    @organization = current_user.organizations.new
+    @organization = current_user.organizations.build
+    @organization.build_organization_profile
   end
 
   def create
-    @organization = current_user.organizations.new(organization_params)
+    @organization = current_user.organizations.build(organization_params)
     respond_to do |format|
       if @organization.save
         format.html { redirect_to @organization, notice: 'Organization created successfully.' }
