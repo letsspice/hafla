@@ -2,27 +2,8 @@ class ApplicationController < ActionController::Base
   before_action :load_organization_by_subdomain
   before_action :authenticate_user!, if: :admin_request?
   before_action :ensure_organization_profile_complete, if: -> { admin_request? && user_signed_in? }
-  include Pundit
-
-  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   private
-
-  def after_sign_up_path_for(_resource)
-    if current_user.org_admin?
-      organization_admin_root_path
-    else
-      root_path
-    end
-  end
-
-  def after_sign_in_path_for(_resource)
-    if current_user.org_admin?
-      organization_admin_root_path
-    else
-      root_path
-    end
-  end
 
   def admin_request?
     request.subdomain.blank? || request.subdomain == 'www'
@@ -38,8 +19,8 @@ class ApplicationController < ActionController::Base
 
   def skip_organization_check?
     devise_controller? ||
-      request.path == new_organization_admin_organization_path
-    request.path == destroy_user_session_path ||
+      request.path == new_organization_admin_organization_path ||
+      request.path == destroy_user_session_path ||
       (controller_name == 'organizations' && action_name == 'create')
   end
 

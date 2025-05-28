@@ -1,5 +1,5 @@
 class OrganizationAdmin::OrganizationsController < ApplicationController
-  authorize OrganizationAdminPolicy
+  before_action :authorize_organization_admin
 
   def new
     @organization = current_user.organizations.build
@@ -26,5 +26,11 @@ class OrganizationAdmin::OrganizationsController < ApplicationController
       :name,
       organization_profile_attributes: %i[city country currency phone timezone phone_code]
     )
+  end
+
+  def authorize_organization_admin
+    unless current_user.org_admin?
+      redirect_to root_path, alert: 'You are not authorized to access this page.'
+    end
   end
 end
