@@ -1,5 +1,6 @@
 class OrganizationAdmin::OrganizationsController < ApplicationController
   before_action :authorize_organization_admin
+  before_action :set_organization, except: %i[new create]
 
   def new
     @organization = current_user.organizations.build
@@ -11,13 +12,14 @@ class OrganizationAdmin::OrganizationsController < ApplicationController
     respond_to do |format|
       if @organization.save
         format.html do
-          redirect_to organization_admin_root_path(@organization), notice: 'Organization created successfully.'
+          redirect_to organization_admin_organization_organization(@organization.slug), notice: "Organization created successfully."
         end
       else
         format.html { render :new, status: :unprocessable_entity }
       end
     end
   end
+
 
   private
 
@@ -30,7 +32,10 @@ class OrganizationAdmin::OrganizationsController < ApplicationController
 
   def authorize_organization_admin
     return if current_user.org_admin?
-
     redirect_to root_path, alert: 'You are not authorized to access this page.'
+  end
+
+  def set_organization
+    @organization = current_user.organizations.friendly.find(params[:id])
   end
 end
