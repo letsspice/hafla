@@ -12,4 +12,8 @@ Rails.application.routes.draw do
   resources :organizations
   resources :organization_profiles
 
+  namespace :admin do
+    root to: 'dashboard#index'
+  end
+
 end
