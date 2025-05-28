@@ -18,6 +18,8 @@ gem 'paper_trail', '16.0.0'
 gem 'pg', '1.5.9'
 gem 'puma', '6.6.0'
 gem 'pundit', '~> 2.5'
+gem "rack-session", ">= 2.1.1"
+gem "rack", ">= 3.1.14"
 gem 'rails', '~> 7.1.5', '>= 7.1.5.1'
 gem 'rubocop', '1.75.3'
 gem 'sprockets-rails', '3.5.2'
