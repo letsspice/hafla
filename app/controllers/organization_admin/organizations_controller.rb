@@ -29,8 +29,8 @@ class OrganizationAdmin::OrganizationsController < ApplicationController
   end
 
   def authorize_organization_admin
-    unless current_user.org_admin?
-      redirect_to root_path, alert: 'You are not authorized to access this page.'
-    end
+    return if current_user.org_admin?
+
+    redirect_to root_path, alert: 'You are not authorized to access this page.'
   end
 end
