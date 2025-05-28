@@ -33,4 +33,16 @@ class Organization < ApplicationRecord
 
   # validations
   validates :name, presence: true, uniqueness: { scope: :user_id }
+  validates :subdomain, presence: true, uniqueness: true
+
+  # callbacks
+  before_validation :set_subdomain
+
+  private
+
+  def set_subdomain
+    unless Organization.exists?(subdomain: subdomain)
+      self.subdomain = name.parameterize
+    end
+  end
 end
