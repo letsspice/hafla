@@ -32,13 +32,14 @@ class ApplicationController < ActionController::Base
     return if skip_organization_check?
     return unless current_user.organizations.empty?
 
-    redirect_to new_organization_admin_organization_path, alert: 'Please complete your organization profile to continue.'
+    redirect_to new_organization_admin_organization_path,
+                alert: 'Please complete your organization profile to continue.'
   end
 
   def skip_organization_check?
     devise_controller? ||
       request.path == new_organization_admin_organization_path
-      request.path == destroy_user_session_path ||
+    request.path == destroy_user_session_path ||
       (controller_name == 'organizations' && action_name == 'create')
   end
 
