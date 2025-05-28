@@ -6,14 +6,15 @@ Rails.application.routes.draw do
     root to: 'organizations#show', as: :organization_root
   end
 
-  root "organizations#index"
+  root "home#index"
 
   devise_for :users
-  resources :organizations
+  resources :organizations, only: [:index, :show]
   resources :organization_profiles
 
-  namespace :admin do
+  namespace :organization_admin do
     root to: 'dashboard#index'
+    resources :organizations
   end
 
 end
