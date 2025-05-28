@@ -1,0 +1,47 @@
+<div class="min-h-screen flex justify-center items-center">
+  <div class="min-w-md mx-auto bg-white rounded-md md:px-10 px-2 md:py-5 py-3">
+    <h1 class="text-3xl font-bold text-center mb-8">Welcome Back</h1>
+    <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+      <div class="flex flex-col space-y-1.5 md:px-16 px-4 md:py-8 py-2">
+        <div class="md:text-2xl text-xl font-semibold leading-none tracking-tight">Log In</div>
+        <div class="md:text-sm text-xs text-muted-foreground">
+          Enter your credentials to access your account.
+        </div>
+      </div>
+      <div class="p-6 md:pt-0 pt-4">
+        <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+          <div class="grid gap-4">
+            <div class="space-y-2">
+              <%= f.label :email, class:"label" %>
+              <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "input-field", placeholder: "john.doe@example.com", required: true %>
+            </div>
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                 <%= f.label :password, class: "label" %>
+                 <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+                    <%= link_to "Forgot password?",  new_password_path(resource_name), class: "link"%>
+                  <% end %>
+              </div>
+               <%= f.password_field :password, autocomplete: "current-password", class: "input-field", required: true  %>
+            </div>
+            <% if devise_mapping.rememberable? %>
+              <div class="flex items-center gap-2 mt-2">
+                <%= f.check_box :remember_me,  class: "peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground" %>
+                <%= f.label :remember_me, class: "font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm" %>
+              </div>
+            <% end %>
+            <%= f.submit "Log in", class: "primary-button" %>
+          </div>
+        <% end %>
+      </div>
+      <div class="p-6 pt-0 flex flex-col items-center gap-2">
+        <p class="text-sm text-muted-foreground">
+          Don't have an account? <%= link_to "Sign up", new_registration_path(resource_name), class: "link" %>
+        </p>
+        <%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
+          <%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name) ,class: 'link' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

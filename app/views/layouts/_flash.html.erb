@@ -1,0 +1,21 @@
+<div class="absolute top-2 lg:right-2 z-50 lg:w-[35%] w-full shadow-lg rounded-full">
+  <% flash.keys.each do |k| %>
+    <div
+      data-main-target="flash"
+      class="sm:px-20 px-3 py-6 flex justify-center items-center gap-4 border-2 text-xs relative rounded-md <%= notification_class(k) %>"
+    >
+      <i class="<%= notification_icon(k) %> text-xl"></i>
+
+      <div
+        data-main-target="progressBar"
+        class="h-1 absolute bottom-0 left-0 w-full <%= progress_bar_background(k)%> transition-all duration-75"
+      ></div>
+
+      <%= flash[k] %>
+
+      <div class="cursor-pointer absolute right-2 top-2" data-action="click->main#closeFlash">
+        <i class="fa-solid fa-circle-xmark text-base"></i>
+      </div>
+    </div>
+  <% end %>
+</div>
