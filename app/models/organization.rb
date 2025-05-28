@@ -41,8 +41,6 @@ class Organization < ApplicationRecord
   private
 
   def set_subdomain
-    while Organization.exists?(subdomain: subdomain)
-      self.subdomain = "#{subdomain}-#{SecureRandom.hex(4)}"
-    end
+    self.subdomain = "#{subdomain}-#{SecureRandom.hex(4)}" while Organization.exists?(subdomain: subdomain)
   end
 end

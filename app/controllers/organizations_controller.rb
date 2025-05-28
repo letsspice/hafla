@@ -20,7 +20,7 @@ class OrganizationsController < ApplicationController
   def organization_params
     params.require(:organization).permit(
       :name,
-      organization_profile_attributes: [:city, :country, :currency, :phone, :timezone, :phone_code]
+      organization_profile_attributes: %i[city country currency phone timezone phone_code]
     )
   end
 end

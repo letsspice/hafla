@@ -22,7 +22,6 @@
 #  fk_rails_...  (organization_id => organizations.id)
 #
 class OrganizationProfile < ApplicationRecord
-
   # associations
   belongs_to :organization
 
@@ -32,7 +31,7 @@ class OrganizationProfile < ApplicationRecord
   validates :currency, presence: true
   validates :phone_code, presence: true
   validates :phone, presence: true,
-                    format: { with: /\A\d{7,15}\z/, message: "must be between 7 and 15 digits" },
+                    format: { with: /\A\d{7,15}\z/, message: 'must be between 7 and 15 digits' },
                     uniqueness: { scope: :phone_code }
   validates :timezone, presence: true
 

@@ -14,10 +14,17 @@ class ApplicationController < ActionController::Base
   end
 
   def ensure_organization_profile_complete
-    return if devise_controller? || request.path == new_organization_path || request.path == destroy_user_session_path || (controller_name == 'organizations' && action_name == 'create')
+    return if skip_organization_check?
     return unless current_user.organizations.empty?
 
     redirect_to new_organization_path, alert: 'Please complete your organization profile to continue.'
+  end
+
+  def skip_organization_check?
+    devise_controller? ||
+      request.path == new_organization_path ||
+      request.path == destroy_user_session_path ||
+      (controller_name == 'organizations' && action_name == 'create')
   end
 
   def load_organization_by_subdomain
@@ -25,8 +32,8 @@ class ApplicationController < ActionController::Base
 
     @organization = Organization.find_by(subdomain: request.subdomain)
 
-    unless @organization
-      render plain: "Organization not found", status: :not_found
-    end
+    return if @organization
+
+    render plain: 'Organization not found', status: :not_found
   end
 end
