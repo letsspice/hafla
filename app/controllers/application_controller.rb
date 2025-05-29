@@ -4,7 +4,6 @@ class ApplicationController < ActionController::Base
   before_action :ensure_organization_profile_complete, if: -> { admin_request? && user_signed_in? }
 
   private
-  
 
   def admin_request?
     request.subdomain.blank? || request.subdomain == 'www'

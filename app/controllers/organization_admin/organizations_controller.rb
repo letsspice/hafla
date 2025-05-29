@@ -12,14 +12,15 @@ class OrganizationAdmin::OrganizationsController < ApplicationController
     respond_to do |format|
       if @organization.save
         format.html do
-          redirect_to organization_admin_organization_path(@organization.slug), notice: "Organization created successfully."
+          session[:organization_id] = @organization.id
+          redirect_to organization_admin_organization_path(@organization.slug),
+                      notice: 'Organization created successfully.'
         end
       else
         format.html { render :new, status: :unprocessable_entity }
       end
     end
   end
-
 
   private
 
@@ -32,6 +33,7 @@ class OrganizationAdmin::OrganizationsController < ApplicationController
 
   def authorize_organization_admin
     return if current_user.org_admin?
+
     redirect_to root_path, alert: 'You are not authorized to access this page.'
   end
 
