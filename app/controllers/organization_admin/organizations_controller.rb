@@ -12,7 +12,7 @@ class OrganizationAdmin::OrganizationsController < ApplicationController
     respond_to do |format|
       if @organization.save
         format.html do
-          redirect_to organization_admin_organization_organization(@organization.slug), notice: "Organization created successfully."
+          redirect_to organization_admin_organization_path(@organization.slug), notice: "Organization created successfully."
         end
       else
         format.html { render :new, status: :unprocessable_entity }

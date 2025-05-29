@@ -41,7 +41,10 @@ export default class extends Controller {
     try {
       const res = await fetch("https://countriesnow.space/api/v0.1/countries/cities", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        },
         body: JSON.stringify({ country: countryName })
       });
   
