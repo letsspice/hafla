@@ -4,6 +4,8 @@ ruby '3.2.2'
 
 # General gems
 gem 'bootsnap', '1.18.4', require: false
+gem 'countries', '~> 7.1', '>= 7.1.1'
+gem 'currencies', '~> 0.4.2'
 gem 'devise', '4.9.4'
 gem 'dotenv-rails', '3.1.8'
 gem 'font-awesome-sass', '~> 6.5', '>= 6.5.2'
@@ -15,6 +17,9 @@ gem 'omniauth', '~> 2.1', '>= 2.1.3'
 gem 'paper_trail', '16.0.0'
 gem 'pg', '1.5.9'
 gem 'puma', '6.6.0'
+gem 'pundit', '~> 2.5'
+gem 'rack', '>= 3.1.14'
+gem 'rack-session', '>= 2.1.1'
 gem 'rails', '~> 7.1.5', '>= 7.1.5.1'
 gem 'rubocop', '1.75.3'
 gem 'sprockets-rails', '3.5.2'
