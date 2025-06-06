@@ -11,14 +11,32 @@
     <%= hotwire_livereload_tags if Rails.env.development? %>
   </head>
 
-  <body data-controller="main">
-    <main class="bg-gray-50">
-      <% unless flash.empty? %>
-        <div id="flash" data-main-target="flash">
-          <%= render 'layouts/flash' %>
-        </div>
-      <% end %>
-      <%= yield %>
-    </main>
+  <body data-controller="main" class="bg-gray-50">
+
+    <% if current_user.present? && current_user.org_admin? %>
+     <div class="flex bg-gray-50 rounded">
+      <%= render 'layouts/navigation/sidebar' %>
+      <div class="flex-1 flex flex-col">
+        <%= render 'layouts/navigation/topbar' %>
+        <main class="p-4 bg-gray-50 min-h-screen">
+          <% unless flash.empty? %>
+            <div id="flash" data-main-target="flash">
+              <%= render 'layouts/flash' %>
+            </div>
+          <% end %>
+          <%= yield %>
+        </main>
+      </div>
+    </div>
+    <% else %>
+      <main class="bg-gray-50">
+        <% unless flash.empty? %>
+          <div id="flash" data-main-target="flash">
+            <%= render 'layouts/flash' %>
+          </div>
+        <% end %>
+        <%= yield %>
+      </main>
+    <% end %>
   </body>
 </html>
