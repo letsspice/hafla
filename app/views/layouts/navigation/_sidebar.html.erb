@@ -1,26 +1,34 @@
 
-<aside class="w-48 h-screen bg-gray-100 flex flex-col rounded-lg text-sm shadow">
+<aside class="w-48 h-screen bg-gray-100 flex flex-col rounded-lg text-xs shadow">
 
   <!-- Navigation Links -->
-  <nav class="flex-1 py-4  space-y-2">
-    <%= link_to root_path, class: "flex items-center space-x-3 px-3 py-2 rounded hover:bg-gray-200" do %>
-      <i class="fas fa-home"></i>
-      <span>Dashboard</span>
-    <% end %>
+  <nav class="flex-1 py-4  space-y-10">
+    <div class="flex flex-col space-y-2">
+      <% main_navigation_links.each do |link| %>
+        <%= link_to link[:path], class: "flex items-center space-x-3 px-3 py-2 rounded hover:bg-gray-200" do %>
+          <i class="<%= link[:icon] %>"></i>
+          <span><%= link[:label] %></span>
+        <% end %>
+      <% end %>
+    </div>
 
-    <%= link_to "#", class: "flex items-center space-x-3 px-3 py-2 rounded hover:bg-gray-200" do %>
-      <i class="fas fa-users"></i>
-      <span>Users</span>
-    <% end %>
-
-    <%= link_to "#", class: "flex items-center space-x-3 px-3 py-2 rounded hover:bg-gray-200" do %>
-      <i class="fas fa-cog"></i>
-      <span>Settings</span>
-    <% end %>
+    <div class="flex flex-col space-y-2">
+      <span class="text-gray-500 text-xs px-3">Channels</span>
+      <% channels_navigation_links.each do |link| %>
+        <%= link_to link[:path], class: "flex items-center space-x-3 px-3 py-2 rounded hover:bg-gray-200" do %>
+          <i class="<%= link[:icon] %>"></i>
+          <span><%= link[:label] %></span>
+        <% end %>
+      <% end %>
+    </div>
   </nav>
 
   <!-- Footer (Optional) -->
-  <div class="p-4 border-t border-gray-700">
+  <div class="p-4 space-y-4">
+    <%= link_to "#", class: "flex items-center space-x-3" do %>
+      <i class="fas fa-cog"></i>
+      <span>Settings</span>
+    <% end %>
     <%= button_to destroy_user_session_path, method: :delete, class: "flex items-center space-x-3 hover:text-red-500" do %>
       <i class="fas fa-sign-out-alt"></i>
       <span>Logout</span>
