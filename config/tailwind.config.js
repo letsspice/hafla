@@ -12,6 +12,7 @@ module.exports = {
       fontFamily: {
         sans: ['Inter var', ...defaultTheme.fontFamily.sans],
         geist: ['"Geist", sans-serif'],
+        montserratAlternates: ['"Montserrat Alternates", sans-serif'],
       },
       colors: {
         primary: "#4318FF",

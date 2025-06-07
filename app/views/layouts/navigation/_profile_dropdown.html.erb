@@ -1,0 +1,32 @@
+<div data-controller="dropdown" class="relative inline-block text-left">
+  <button data-action="click->dropdown#toggle" type="button" class="flex items-center gap-2 px-4 py-2 bg-black shadow-md hover:bg-black/80 rounded-md">
+    <span class="bg-purple-200 text-purple-700 px-2 py-1 rounded-full text-xs font-medium"><%= @organization.initials %></span>
+    <%= @organization.name %>
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <div data-dropdown-target="menu" class="hidden absolute right-0 mt-4 w-72 rounded-md shadow-lg bg-white text-black ring-1 ring-black ring-opacity-5 z-10">
+    <% @organizations.each do |organization| %>
+      <a href="#" class="flex items-center gap-2 px-4 py-2 text-xs hover:bg-gray-100 <%= 'bg-gray-100' if organization == @organization %>">
+        <span class="bg-purple-200 text-purple-700 px-2 py-1 rounded-full text-xs"><%= organization.initials %></span>
+        <%= organization.name %>
+      </a>
+    <% end %>
+    <div class="border-t my-2"></div>
+    <div href="" class="flex flex-col gap-2 px-4 py-2 text-xs hover:bg-gray-100">
+      <span class="font-bold">
+       <%= current_user.role_title %>
+      </span>
+      <span class="text-gray-500"><%= current_user.email %></span>
+    </div>
+    <a href="#" class="block px-4 py-2 text-xs hover:bg-gray-100">Contact Support</a>
+    <a href="#" class="block px-4 py-2 text-xs hover:bg-gray-100">Manage Account</a>
+
+    <div class="border-t my-2"></div>
+    <%= button_to destroy_user_session_path, method: :delete, class: "block px-4 py-2 text-xs hover:bg-gray-100 text-red-600 w-full text-left" do %>
+      Logout
+    <% end %>
+  </div>
+</div>

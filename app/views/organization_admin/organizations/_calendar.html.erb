@@ -1,0 +1,24 @@
+<div class="bg-white rounded-xl shadow-sm p-6">
+    <div class="mt-8">
+        <div class="grid grid-cols-7 gap-1 text-xs">
+        <div class="text-center text-gray-400 py-2">Mo</div>
+        <div class="text-center text-gray-400 py-2">Tu</div>
+        <div class="text-center text-gray-400 py-2">We</div>
+        <div class="text-center text-gray-400 py-2">Th</div>
+        <div class="text-center text-gray-400 py-2">Fr</div>
+        <div class="text-center text-gray-400 py-2">Sa</div>
+        <div class="text-center text-gray-400 py-2">Su</div>
+        
+        <!-- Calendar dates -->
+        <% (1..31).each do |day| %>
+            <% if day == 27 %>
+            <div class="text-center py-2 bg-yellow-400 text-white rounded-full w-8 h-8 flex items-center justify-center mx-auto"><%= day %></div>
+            <% elsif day == 30 %>
+            <div class="text-center py-2 bg-red-400 text-white rounded-full w-8 h-8 flex items-center justify-center mx-auto"><%= day %></div>
+            <% else %>
+            <div class="text-center py-2 text-gray-600"><%= day %></div>
+            <% end %>
+        <% end %>
+        </div>
+    </div>
+</div>

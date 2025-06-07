@@ -1,1 +1,25 @@
-<%= @organization.name %>
+<div class="text-xs pt-2">
+  <div class="flex justify-between items-center mb-4">
+    <div class="flex items-center space-x-4">
+      <select class="px-4 py-2 border border-gray-300 rounded-lg bg-white w-28 text-xs">
+          <option>May</option>
+          <option>June</option>
+          <option>July</option>
+      </select>
+      <select class="px-4 py-2 border border-gray-300 rounded-lg bg-white w-28 text-xs">
+          <option>2025</option>
+          <option>2024</option>
+          <option>2023</option>
+      </select>
+    </div>
+    <%= link_to root_path, class: "block bg-primary text-white px-4 py-2 rounded-md space-x-4" do %>
+        <i class="fas fa-plus"></i>
+        New Event
+    <% end %>
+  </div>
+   
+	<div class="bg-gray-50 rounded-lg shadow mt-2">
+		<%= render "organization_admin/organizations/stat_cards" %>
+		<%= render "organization_admin/organizations/dashboard" %>
+	</div>
+</div>

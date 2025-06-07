@@ -38,6 +38,11 @@ class Organization < ApplicationRecord
   # callbacks
   before_validation :set_subdomain
 
+  # instance methods
+  def initials
+    name.split.map(&:first).join.upcase
+  end
+
   private
 
   def set_subdomain

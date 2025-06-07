@@ -1,0 +1,25 @@
+<div class="bg-white rounded-xl shadow-sm p-6">
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-semibold text-gray-900">Period Revenue</h3>
+        <i class="fas fa-chart-bar text-gray-400"></i>
+    </div>
+
+        <!-- Bar Chart -->
+    <div class="flex items-end space-x-2 h-24 mb-4">
+    <% [8, 12, 16, 20, 24, 28, 32, 24, 20, 16].each_with_index do |height, index| %>
+        <div class="<%= index.even? ? 'bg-purple-500' : 'bg-blue-300' %> w-4 rounded-t" style="height: <%= height * 2 %>px;"></div>
+    <% end %>
+    </div>
+
+    <div class="flex justify-between text-xs text-gray-400">
+        <span>17</span>
+        <span>18</span>
+        <span>19</span>
+        <span>20</span>
+        <span>21</span>
+        <span>22</span>
+        <span>23</span>
+        <span>24</span>
+        <span>25</span>
+    </div>
+</div>

@@ -33,7 +33,7 @@ gem 'tzinfo-data', platforms: %i[windows jruby]
 group :development do
   gem 'annotate', '3.2.0'
   gem 'bullet', '8.0.5'
-  gem 'hotwire-livereload', '1.4'
+  gem 'hotwire-livereload', '2.0.0'
   gem 'rspec-rails', '7.1.1'
   gem 'web-console', '4.2.1'
 

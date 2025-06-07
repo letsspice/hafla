@@ -1,8 +1,6 @@
+<aside class="w-48 max-h-screen bg-white flex flex-col rounded-lg text-xs shadow fixed left-0 top-6 bottom-0">
 
-<aside class="w-48 h-screen bg-gray-100 flex flex-col rounded-lg text-xs shadow">
-
-  <!-- Navigation Links -->
-  <nav class="flex-1 py-4  space-y-10">
+  <nav class="flex-1 pt-16 py-4  space-y-10">
     <div class="flex flex-col space-y-2">
       <% main_navigation_links.each do |link| %>
         <%= link_to link[:path], class: "flex items-center space-x-3 px-3 py-2 rounded hover:bg-gray-200" do %>
@@ -13,7 +11,7 @@
     </div>
 
     <div class="flex flex-col space-y-2">
-      <span class="text-gray-500 text-xs px-3">Channels</span>
+      <span class="text-gray-500 text-xs px-3 uppercase">Channels</span>
       <% channels_navigation_links.each do |link| %>
         <%= link_to link[:path], class: "flex items-center space-x-3 px-3 py-2 rounded hover:bg-gray-200" do %>
           <i class="<%= link[:icon] %>"></i>
@@ -28,10 +26,6 @@
     <%= link_to "#", class: "flex items-center space-x-3" do %>
       <i class="fas fa-cog"></i>
       <span>Settings</span>
-    <% end %>
-    <%= button_to destroy_user_session_path, method: :delete, class: "flex items-center space-x-3 hover:text-red-500" do %>
-      <i class="fas fa-sign-out-alt"></i>
-      <span>Logout</span>
     <% end %>
   </div>
 </aside>

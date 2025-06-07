@@ -47,6 +47,14 @@ class User < ApplicationRecord
     super || !confirmed?
   end
 
+  def role_title
+    {
+      'org_admin'   => 'Organization Admin',
+      'user'        => 'User',
+      'super_admin' => 'Super Admin'
+    }[role]
+  end
+  
   def inactive_message
     confirmed? ? super : :unconfirmed
   end

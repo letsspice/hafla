@@ -39,5 +39,7 @@ class OrganizationAdmin::OrganizationsController < ApplicationController
 
   def set_organization
     @organization = current_user.organizations.friendly.find(params[:id])
+    @organization_profile = @organization.organization_profile
+    @organizations = current_user.organizations
   end
 end
