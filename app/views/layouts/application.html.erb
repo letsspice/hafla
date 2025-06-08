@@ -17,7 +17,8 @@
       <%= render 'layouts/navigation/sidebar' %>
       <div class="">
         <%= render 'layouts/navigation/topbar' %>
-        <main class="p-4 bg-gray-50 min-h-screen overflow-y-auto ml-48 pt-16">
+        <%= render 'layouts/navigation/bottom_bar' %>
+        <main class="p-4 bg-gray-50 min-h-screen overflow-y-auto md:ml-48 pt-16">
           <% unless flash.empty? %>
             <div id="flash" data-main-target="flash">
               <%= render 'layouts/flash' %>

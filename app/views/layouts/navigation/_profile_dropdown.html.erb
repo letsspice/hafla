@@ -25,7 +25,12 @@
     <a href="#" class="block px-4 py-2 text-xs hover:bg-gray-100">Manage Account</a>
 
     <div class="border-t my-2"></div>
-    <%= button_to destroy_user_session_path, method: :delete, class: "block px-4 py-2 text-xs hover:bg-gray-100 text-red-600 w-full text-left" do %>
+    <%= link_to  root_path, class: "block px-4 py-2 text-xs hover:bg-gray-100 md:hidden flex items-center gap-2" do %>
+      <i class="fas fa-cog"></i>
+      <span>Settings</span>
+    <% end %>
+    <%= button_to destroy_user_session_path, method: :delete, class: "block px-4 py-2 text-xs hover:bg-gray-100 text-red-600 w-full text-left flex items-center gap-2" do %>
+      <i class="fas fa-sign-out-alt"></i>
       Logout
     <% end %>
   </div>

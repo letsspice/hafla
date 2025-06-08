@@ -1,5 +1,5 @@
 <div class="text-xs pt-2">
-  <div class="flex justify-between items-center mb-4">
+  <div class="flex md:flex-row flex-col md:justify-between md:items-center mb-4 space-y-4 md:space-y-0">
     <div class="flex items-center space-x-4">
       <select class="px-4 py-2 border border-gray-300 rounded-lg bg-white w-28 text-xs">
           <option>May</option>
@@ -12,9 +12,9 @@
           <option>2023</option>
       </select>
     </div>
-    <%= link_to root_path, class: "block bg-primary text-white px-4 py-2 rounded-md space-x-4" do %>
+    <%= link_to root_path, class: "flex bg-primary text-white px-4 py-2 rounded-md space-x-4 items-center justify-center" do %>
         <i class="fas fa-plus"></i>
-        New Event
+        <span>New Event</span>
     <% end %>
   </div>
    
