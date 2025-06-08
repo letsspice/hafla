@@ -1,0 +1,31 @@
+<aside class="w-48 max-h-screen bg-white md:flex hidden flex-col rounded-lg text-xs shadow fixed left-0 top-6 bottom-0">
+
+  <nav class="flex-1 pt-16 py-4  space-y-10">
+    <div class="flex flex-col space-y-2">
+      <% main_navigation_links.each do |link| %>
+        <%= link_to link[:path], class: "flex items-center space-x-3 px-3 py-2 rounded hover:bg-gray-200" do %>
+          <i class="<%= link[:icon] %>"></i>
+          <span><%= link[:label] %></span>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="flex flex-col space-y-2">
+      <span class="text-gray-500 text-xs px-3 uppercase">Channels</span>
+      <% channels_navigation_links.each do |link| %>
+        <%= link_to link[:path], class: "flex items-center space-x-3 px-3 py-2 rounded hover:bg-gray-200" do %>
+          <i class="<%= link[:icon] %>"></i>
+          <span><%= link[:label] %></span>
+        <% end %>
+      <% end %>
+    </div>
+  </nav>
+
+  <!-- Footer (Optional) -->
+  <div class="p-4 space-y-4">
+    <%= link_to "#", class: "flex items-center space-x-3" do %>
+      <i class="fas fa-cog"></i>
+      <span>Settings</span>
+    <% end %>
+  </div>
+</aside>

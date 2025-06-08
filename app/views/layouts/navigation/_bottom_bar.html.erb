@@ -1,0 +1,10 @@
+<nav class="bg-black text-white shadow px-4 py-2 text-xs fixed bottom-0 left-0 right-0 z-10 md:hidden">
+ <div class="flex justify-around">
+  <% main_navigation_links.each do |link| %>
+    <%= link_to link[:path], class: "flex flex-col justify-center items-center space-y-1 px-3 py-2 rounded hover:bg-gray-200" do %>
+      <i class="<%= link[:icon] %> text-base"></i>
+      <span class="text-[9px]"><%= link[:label] %></span>
+    <% end %>
+  <% end %>
+ </div>
+</nav>

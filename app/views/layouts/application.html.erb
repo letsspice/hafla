@@ -6,21 +6,37 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
-    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
-    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
-
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
-  <body data-controller="main">
-    <main class="bg-gray-50">
-      <% unless flash.empty? %>
-        <div id="flash" data-main-target="flash">
-          <%= render 'layouts/flash' %>
-        </div>
-      <% end %>
-      <%= yield %>
-    </main>
+  <body data-controller="main" class="bg-gray-50">
+
+    <% if current_user.present? && current_user.org_admin? %>
+     <div class="relative bg-gray-50 rounded">
+      <%= render 'layouts/navigation/sidebar' %>
+      <div class="">
+        <%= render 'layouts/navigation/topbar' %>
+        <%= render 'layouts/navigation/bottom_bar' %>
+        <main class="p-4 bg-gray-50 min-h-screen overflow-y-auto md:ml-48 pt-16">
+          <% unless flash.empty? %>
+            <div id="flash" data-main-target="flash">
+              <%= render 'layouts/flash' %>
+            </div>
+          <% end %>
+          <%= yield %>
+        </main>
+      </div>
+    </div>
+    <% else %>
+      <main class="bg-gray-50 text-xs">
+        <% unless flash.empty? %>
+          <div id="flash" data-main-target="flash">
+            <%= render 'layouts/flash' %>
+          </div>
+        <% end %>
+        <%= yield %>
+      </main>
+    <% end %>
   </body>
 </html>

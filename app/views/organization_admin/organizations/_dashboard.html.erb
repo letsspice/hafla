@@ -1,0 +1,19 @@
+<div class="p-4">
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
+        
+    <%= render 'organization_admin/organizations/recent_sales' %>
+     <%= render "organization_admin/organizations/active_events" %>
+    
+    <%= render "organization_admin/organizations/calendar" %>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <%= render "organization_admin/organizations/revenue_chart" %>
+        <div class="space-y-6">
+            <%= render "organization_admin/organizations/marketing_analytics" %>
+            <%= render 'organization_admin/organizations/revenue' %>
+            <%= render "organization_admin/organizations/traffic" %>
+        </div>
+    </div>
+</div>
