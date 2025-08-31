@@ -93,6 +93,42 @@ export default class extends Controller {
     this.updateColorFromRGB(colorType, rgbComponent, value)
   }
 
+  updateHex(event) {
+    const input = event.target
+    const colorType = input.dataset.colorType
+    const hexValue = input.value
+    
+    // Validate hex format
+    if (this.isValidHex(hexValue)) {
+      this.updateColorDisplay(colorType, hexValue)
+      this.updateRGBFromHex(colorType, hexValue)
+    }
+  }
+
+  isValidHex(hex) {
+    return /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(hex)
+  }
+
+  updateRGBFromHex(colorType, hex) {
+    const rgb = this.hexToRgb(hex)
+    if (rgb) {
+      // Update RGB input fields
+      const rgbInputs = document.querySelectorAll(`[data-color-type="${colorType}"][data-rgb]`)
+      rgbInputs.forEach(input => {
+        const component = input.dataset.rgb
+        input.value = rgb[component]
+      })
+    }
+  }
+
+  updateHexInput(colorType, hex) {
+    // Update hex input field
+    const hexInput = document.querySelector(`[data-color-type="${colorType}"][data-action*="updateHex"]`)
+    if (hexInput) {
+      hexInput.value = hex
+    }
+  }
+
   getColorHandle(colorType) {
     if (colorType === 'primary') {
       return this.primaryColorHandleTarget
@@ -135,6 +171,9 @@ export default class extends Controller {
     rgb[component] = value
     const hex = this.rgbToHex(rgb.r, rgb.g, rgb.b)
     this.updateColorDisplay(colorType, hex)
+    
+    // Update hex input field
+    this.updateHexInput(colorType, hex)
   }
 
   getCurrentHue(colorType) {

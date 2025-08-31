@@ -2,26 +2,55 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["menu"]
+  static targets = ["menu", "icon"]
 
   connect() {
-    this.closeOnOutsideClick = this.closeOnOutsideClick.bind(this)
+    // Close dropdown when clicking outside
+    document.addEventListener('click', this.handleClickOutside.bind(this))
   }
 
-  toggle() {
-    this.menuTarget.classList.toggle("hidden")
+  disconnect() {
+    document.removeEventListener('click', this.handleClickOutside.bind(this))
+  }
 
-    if (!this.menuTarget.classList.contains("hidden")) {
-      document.addEventListener("click", this.closeOnOutsideClick)
+  toggle(event) {
+    event.stopPropagation()
+    
+    if (this.menuTarget.classList.contains('opacity-0')) {
+      this.show()
     } else {
-      document.removeEventListener("click", this.closeOnOutsideClick)
+      this.hide()
     }
   }
 
-  closeOnOutsideClick(event) {
+  show() {
+    this.menuTarget.classList.remove('opacity-0', 'invisible')
+    this.menuTarget.classList.add('opacity-100', 'visible')
+    this.iconTarget.style.transform = 'rotate(180deg)'
+  }
+
+  hide() {
+    this.menuTarget.classList.add('opacity-0', 'invisible')
+    this.menuTarget.classList.remove('opacity-100', 'visible')
+    this.iconTarget.style.transform = 'rotate(0deg)'
+  }
+
+  handleClickOutside(event) {
     if (!this.element.contains(event.target)) {
-      this.menuTarget.classList.add("hidden")
-      document.removeEventListener("click", this.closeOnOutsideClick)
+      this.hide()
     }
+  }
+
+  selectSocialLink(event) {
+    const platform = event.currentTarget.dataset.platform
+    this.hide()
+    
+    // Here you can add logic to add the selected social platform
+    // For now, we'll just log it
+    console.log(`Selected platform: ${platform}`)
+    
+    // You can trigger an action to add the social link
+    // this.dispatch('socialLinkSelected', { detail: { platform } })
   }
 }
+
