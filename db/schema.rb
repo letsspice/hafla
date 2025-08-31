@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_08_31_070223) do
+ActiveRecord::Schema[7.1].define(version: 2025_08_31_065824) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -59,6 +59,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_08_31_070223) do
     t.string "primary_color", limit: 7
     t.string "secondary_color", limit: 7
     t.string "slogan", limit: 255
+    t.text "description"
     t.string "instagram_url", limit: 500
     t.string "twitter_url", limit: 500
     t.string "facebook_url", limit: 500
@@ -84,7 +85,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_08_31_070223) do
     t.string "timezone", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "description"
     t.index ["organization_id"], name: "index_organization_profiles_on_organization_id"
   end
 

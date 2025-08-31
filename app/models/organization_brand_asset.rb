@@ -3,6 +3,7 @@
 # Table name: organization_brand_assets
 #
 #  id              :uuid             not null, primary key
+#  description     :text
 #  discord_url     :string(500)
 #  facebook_url    :string(500)
 #  instagram_url   :string(500)

@@ -1,69 +1,346 @@
-<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-  <div class="flex items-center mb-4">
-    <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
-      <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z"></path>
-      </svg>
+<div class="max-w-4xl mx-auto text-xs">
+  <!-- Logos Section -->
+  <div class="bg-white rounded-lg border border-gray-200 p-6 mb-6">
+    <div class="mb-6">
+      <h2 class="text-xl font-semibold text-gray-900 mb-2">Logos</h2>
+      <p class="text-sm text-gray-600">Used for most common logo applications</p>
     </div>
-    <h2 class="text-xl font-semibold text-gray-900">Brand Assets</h2>
+
+    <!-- Default Logo -->
+    <div class="mb-8">
+      <h3 class="text-sm font-medium text-gray-900 mb-3">Default</h3>
+      <div class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-6 mb-4">
+        <div class="flex items-center justify-center h-32">
+          <% if @organization.organization_brand_asset&.logo&.attached? %>
+            <%= image_tag @organization.organization_brand_asset.logo, class: "max-h-full max-w-full object-contain" %>
+          <% else %>
+            <div class="text-center">
+              <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <p class="mt-2 text-sm text-gray-600">No logo uploaded</p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      
+      <div class="flex space-x-3 mb-3">
+        <button type="button" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+          Change
+        </button>
+        <button type="button" class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+          Remove
+        </button>
+      </div>
+      
+      <p class="text-xs text-gray-500">HEIC, WEBP, SVG, PNG, or JPG. Recommended width: 512 pixels minimum.</p>
+    </div>
   </div>
-  <p class="text-gray-600 mb-4">Upload and manage your organization's logos, colors, and brand materials.</p>
 
-  <div class="space-y-4">
-
-  <%= form_for [:organization_admin, @organization] do |f| %>
-    <%= render 'shared/errors', object: f.object %>
-
-    <div class="space-y-4">
-      <%= f.fields_for :organization_brand_assets do |obf| %>
-        <div class="space-y-2">
-          <%= obf.label :logo, class: "label" %>
-          <%= obf.file_field :logo, class: "input-field" %>
-        </div>
-
-        <div class="space-y-2">
-          <%= obf.label :cover_image, class: "label" %>
-          <%= obf.file_field :cover_image, class: "input-field" %>
-        </div>
-
-        <div class="space-y-2">
-          <%= obf.label :primary_color, class: "label" %>
-          <%= obf.color_field :primary_color, class: "input-field" %>
-        </div>
-
-        <div class="space-y-2">
-          <%= obf.label :secondary_color, class: "label" %>
-          <%= obf.color_field :secondary_color, class: "input-field" %>
-        </div>
-
-        <div class="space-y-2">
-          <%= obf.label :slogan, class: "label" %>
-          <%= obf.text_field :slogan, class: "input-field" %>
-        </div>
-
-        <div class="space-y-2">
-          <%= obf.label :instagram_url, class: "label" %>
-          <%= obf.url_field :instagram_url, class: "input-field" %>
-        </div>
-
-        <div class="space-y-2">
-          <%= obf.label :twitter_url, class: "label" %>
-          <%= obf.url_field :twitter_url, class: "input-field" %>
-        </div>
-
-        <div class="space-y-2">
-          <%= obf.label :facebook_url, class: "label" %>
-          <%= obf.url_field :facebook_url, class: "input-field" %>
-        </div>
-      <% end %>
+  <!-- Cover Image Section -->
+  <div class="bg-white rounded-lg border border-gray-200 p-6 mb-6">
+    <div class="mb-6">
+      <h2 class="text-xl font-semibold text-gray-900 mb-2">Cover Image</h2>
+      <p class="text-sm text-gray-600">Used for social media and marketing materials</p>
     </div>
-  <% end %>
 
+    <div class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-6 mb-4">
+      <div class="flex items-center justify-center h-48">
+        <% if @organization.organization_brand_asset&.cover_image&.attached? %>
+          <%= image_tag @organization.organization_brand_asset.cover_image, class: "max-h-full max-w-full object-cover rounded" %>
+        <% else %>
+          <div class="text-center">
+            <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+              <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <p class="mt-2 text-sm text-gray-600">No cover image uploaded</p>
+          </div>
+        <% end %>
+      </div>
+    </div>
     
-    <div class="pt-4">
-      <button type="button" class="w-full bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
-        Save Brand Assets
+    <div class="flex space-x-3 mb-3">
+      <button type="button" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+        Change
+      </button>
+      <button type="button" class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+        Remove
       </button>
     </div>
+    
+    <p class="text-xs text-gray-500">HEIC, WEBP, SVG, PNG, or JPG. Recommended: 1200x630 pixels minimum.</p>
+  </div>
+
+  <!-- Brand Colors Section -->
+  <div class="bg-white rounded-lg border border-gray-200 p-6 mb-6">
+    <div class="mb-6">
+      <h2 class="text-xl font-semibold text-gray-900 mb-2">Colors</h2>
+      <p class="text-sm text-gray-600">The brand colors that appear on your store, social media, and more</p>
+    </div>
+
+    <!-- Primary Colors Section -->
+    <div class="mb-8">
+      <h3 class="text-sm font-medium text-gray-900 mb-4">Primary</h3>
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-4">
+            <div class="relative group">
+              <div class="w-12 h-12 rounded border border-gray-300 bg-blue-500 cursor-pointer hover:ring-2 hover:ring-blue-300 transition-all duration-200" 
+                   style="background-color: <%= @organization.organization_brand_asset&.primary_color || '#3B82F6' %>"
+                   data-color-type="primary"
+                   data-current-color="<%= @organization.organization_brand_asset&.primary_color || '#3B82F6' %>">
+              </div>
+              <div class="absolute bottom-0 left-0 w-3 h-3 bg-white rounded-full border border-gray-300"></div>
+              
+              <!-- Custom Color Picker Popup -->
+              <div class="absolute top-full left-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg p-4 z-10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 w-80">
+                <div class="flex items-center space-x-3 mb-4">
+                  <div class="w-8 h-8 rounded border border-gray-300" style="background-color: <%= @organization.organization_brand_asset&.primary_color || '#3B82F6' %>"></div>
+                  <div>
+                    <p class="text-xs font-medium text-gray-900">Primary color</p>
+                    <p class="text-xs text-gray-500 font-mono"><%= @organization.organization_brand_asset&.primary_color || '#3B82F6' %></p>
+                  </div>
+                </div>
+                
+                <!-- Custom Color Picker -->
+                <div class="space-y-4">
+                  <!-- Main Color Selection Area -->
+                  <div class="relative">
+                    <div class="w-full h-32 bg-gradient-to-br from-white via-blue-400 to-black rounded cursor-crosshair" 
+                         data-action="mousedown->settings#startColorDrag"
+                         data-color-type="primary">
+                      <div class="absolute w-3 h-3 bg-white border-2 border-gray-800 rounded-full cursor-move" 
+                           style="left: 70%; top: 30%;"
+                           data-settings-target="primaryColorHandle"></div>
+                    </div>
+                  </div>
+                  
+                  <!-- Hue Slider and Current Color -->
+                  <div class="flex items-center space-x-3">
+                    <div class="w-6 h-6 bg-gray-200 rounded flex items-center justify-center">
+                      <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z"></path>
+                      </svg>
+                    </div>
+                    <div class="w-8 h-8 rounded-full border-2 border-gray-300" style="background-color: <%= @organization.organization_brand_asset&.primary_color || '#3B82F6' %>"></div>
+                    <div class="flex-1 h-6 bg-gradient-to-r from-red-500 via-yellow-500 via-green-500 via-blue-500 via-purple-500 to-red-500 rounded cursor-pointer relative"
+                         data-action="click->settings#selectHue"
+                         data-color-type="primary">
+                      <div class="absolute w-3 h-3 bg-white border-2 border-gray-800 rounded-full -top-1" 
+                           style="left: 60%;"
+                           data-settings-target="primaryHueHandle"></div>
+                    </div>
+                  </div>
+                  
+                  <!-- RGB Input Fields -->
+                  <div class="grid grid-cols-3 gap-3">
+                    <div>
+                      <input type="number" min="0" max="255" value="59" 
+                             class="w-full text-xs border border-gray-300 rounded px-2 py-1 text-center"
+                             data-action="input->settings#updateRGB"
+                             data-color-type="primary"
+                             data-rgb="r">
+                      <label class="block text-xs text-gray-600 text-center mt-1">R</label>
+                    </div>
+                    <div>
+                      <input type="number" min="0" max="255" value="130" 
+                             class="w-full text-xs border border-gray-300 rounded px-2 py-1 text-center"
+                             data-action="input->settings#updateRGB"
+                             data-color-type="primary"
+                             data-rgb="g">
+                      <label class="block text-xs text-gray-600 text-center mt-1">G</label>
+                    </div>
+                    <div>
+                      <input type="number" min="0" max="255" value="246" 
+                             class="w-full text-xs border border-gray-300 rounded px-2 py-1 text-center"
+                             data-action="input->settings#updateRGB"
+                             data-color-type="primary"
+                             data-rgb="b">
+                      <label class="block text-xs text-gray-600 text-center mt-1">B</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <p class="text-sm font-medium text-gray-900">Primary color</p>
+              <p class="text-sm text-gray-500 font-mono" data-settings-target="primaryColorHex"><%= @organization.organization_brand_asset&.primary_color || '#3B82F6' %></p>
+            </div>
+          </div>
+          <button type="button" class="text-red-600 hover:text-red-700 text-sm font-medium">Remove</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Secondary Colors Section -->
+    <div>
+      <h3 class="text-sm font-medium text-gray-900 mb-4">Secondary</h3>
+      <p class="text-sm text-gray-600 mb-4">Supporting colors used for accents and additional detail</p>
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-4">
+            <div class="relative group">
+              <div class="w-12 h-12 rounded border border-gray-300 bg-purple-500 cursor-pointer hover:ring-2 hover:ring-blue-300 transition-all duration-200" 
+                   style="background-color: <%= @organization.organization_brand_asset&.secondary_color || '#8B5CF6' %>"
+                   data-color-type="secondary"
+                   data-current-color="<%= @organization.organization_brand_asset&.secondary_color || '#8B5CF6' %>">
+              </div>
+              <div class="absolute bottom-0 left-0 w-3 h-3 bg-white rounded-full border border-gray-300"></div>
+              
+              <!-- Custom Color Picker Popup -->
+              <div class="absolute top-full left-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg p-4 z-10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 w-80">
+                <div class="flex items-center space-x-3 mb-4">
+                  <div class="w-8 h-8 rounded border border-gray-300" style="background-color: <%= @organization.organization_brand_asset&.secondary_color || '#8B5CF6' %>"></div>
+                  <div>
+                    <p class="text-xs font-medium text-gray-900">Secondary color 1</p>
+                    <p class="text-xs text-gray-500 font-mono"><%= @organization.organization_brand_asset&.secondary_color || '#8B5CF6' %></p>
+                  </div>
+                </div>
+                
+                <!-- Custom Color Picker -->
+                <div class="space-y-4">
+                  <!-- Main Color Selection Area -->
+                  <div class="relative">
+                    <div class="w-full h-32 bg-gradient-to-br from-white via-purple-400 to-black rounded cursor-crosshair" 
+                         data-action="mousedown->settings#startColorDrag"
+                         data-color-type="secondary">
+                      <div class="absolute w-3 h-3 bg-white border-2 border-gray-800 rounded-full cursor-move" 
+                           style="left: 70%; top: 30%;"
+                           data-settings-target="secondaryColorHandle"></div>
+                    </div>
+                  </div>
+                  
+                  <!-- Hue Slider and Current Color -->
+                  <div class="flex items-center space-x-3">
+                    <div class="w-6 h-6 bg-gray-200 rounded flex items-center justify-center">
+                      <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z"></path>
+                      </svg>
+                    </div>
+                    <div class="w-8 h-8 rounded-full border-2 border-gray-300" style="background-color: <%= @organization.organization_brand_asset&.secondary_color || '#8B5CF6' %>"></div>
+                    <div class="flex-1 h-6 bg-gradient-to-r from-red-500 via-yellow-500 via-green-500 via-blue-500 via-purple-500 to-red-500 rounded cursor-pointer relative"
+                         data-action="click->settings#selectHue"
+                         data-color-type="secondary">
+                      <div class="absolute w-3 h-3 bg-white border-2 border-gray-800 rounded-full -top-1" 
+                           style="left: 80%;"
+                           data-settings-target="secondaryHueHandle"></div>
+                    </div>
+                  </div>
+                  
+                  <!-- RGB Input Fields -->
+                  <div class="grid grid-cols-3 gap-3">
+                    <div>
+                      <input type="number" min="0" max="255" value="139" 
+                             class="w-full text-xs border border-gray-300 rounded px-2 py-1 text-center"
+                             data-action="input->settings#updateRGB"
+                             data-color-type="secondary"
+                             data-rgb="r">
+                      <label class="block text-xs text-gray-600 text-center mt-1">R</label>
+                    </div>
+                    <div>
+                      <input type="number" min="0" max="255" value="92" 
+                             class="w-full text-xs border border-gray-300 rounded px-2 py-1 text-center"
+                             data-action="input->settings#updateRGB"
+                             data-color-type="secondary"
+                             data-rgb="g">
+                      <label class="block text-xs text-gray-600 text-center mt-1">G</label>
+                    </div>
+                    <div>
+                      <input type="number" min="0" max="255" value="246" 
+                             class="w-full text-xs border border-gray-300 rounded px-2 py-1 text-center"
+                             data-action="input->settings#updateRGB"
+                             data-color-type="secondary"
+                             data-rgb="b">
+                      <label class="block text-xs text-gray-600 text-center mt-1">B</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <p class="text-sm font-medium text-gray-900">Secondary color 1</p>
+              <p class="text-sm text-gray-500 font-mono" data-settings-target="secondaryColorHex"><%= @organization.organization_brand_asset&.secondary_color || '#8B5CF6' %></p>
+            </div>
+          </div>
+          <button type="button" class="text-red-600 hover:text-red-700 text-sm font-medium">Remove</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slogan Section -->
+  <div class="bg-white rounded-lg border border-gray-200 p-6 mb-6">
+    <div class="mb-6">
+      <h2 class="text-sm font-semibold text-gray-900 mb-2">Slogan</h2>
+      <p class="text-sm text-gray-600">Your organization's tagline or mission statement</p>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2">Organization Slogan</label>
+      <textarea 
+        class="w-full text-sm border border-gray-300 rounded px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
+        rows="3" 
+        placeholder="Enter your organization's slogan or tagline..."
+      ><%= @organization.organization_brand_asset&.slogan %></textarea>
+      <p class="text-xs text-gray-500 mt-1">Keep it concise and memorable. This will be displayed alongside your logo in various applications.</p>
+    </div>
+  </div>
+
+  <!-- Description Section -->
+  <div class="bg-white rounded-lg border border-gray-200 p-6 mb-6">
+    <div class="mb-6">
+      <h2 class="text-sm font-semibold text-gray-900 mb-2">Description</h2>
+      <p class="text-sm text-gray-600">A detailed description of your organization</p>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2">Organization Description</label>
+      <textarea 
+        class="w-full text-sm border border-gray-300 rounded px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
+        rows="6" 
+        placeholder="Describe your organization, its mission, values, and what makes it unique..."
+      ><%= @organization.organization_brand_asset&.description %></textarea>
+      <p class="text-xs text-gray-500 mt-1">This description will be used in marketing materials, social media profiles, and other brand communications.</p>
+    </div>
+  </div>
+
+  <!-- Social Media Links Section -->
+  <div class="bg-white rounded-lg border border-gray-200 p-6 mb-6">
+    <div class="mb-6">
+      <h2 class="text-sm font-semibold text-gray-900 mb-2">Social Media</h2>
+      <p class="text-sm text-gray-600">Connect your organization's social media accounts</p>
+    </div>
+
+    <div class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Instagram URL</label>
+        <input type="url" class="w-full text-sm border border-gray-300 rounded px-3 py-2" placeholder="https://instagram.com/yourorganization">
+      </div>
+      
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Twitter URL</label>
+        <input type="url" class="w-full text-sm border border-gray-300 rounded px-3 py-2" placeholder="https://twitter.com/yourorganization">
+      </div>
+      
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Facebook URL</label>
+        <input type="url" class="w-full text-sm border border-gray-300 rounded px-3 py-2" placeholder="https://facebook.com/yourorganization">
+      </div>
+    </div>
+  </div>
+
+  <!-- Save Button -->
+  <div class="flex justify-end">
+    <button type="button" class="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 font-medium">
+      Save Changes
+    </button>
+  </div>
+
+  <!-- Footer Link -->
+  <div class="text-center mt-8">
+    <a href="#" class="inline-flex items-center text-sm text-gray-500 hover:text-gray-700">
+      <span class="w-5 h-5 mr-2">🎨</span>
+      No logo? Create one with Hatchful
+    </a>
   </div>
 </div>

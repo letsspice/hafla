@@ -9,6 +9,7 @@ class CreateOrganizationBrandAssets < ActiveRecord::Migration[7.1]
       t.string :secondary_color, limit: 7 # Hex color code
       
       t.string :slogan, limit: 255
+      t.text :description
       
       # Social media links
       t.string :instagram_url, limit: 500

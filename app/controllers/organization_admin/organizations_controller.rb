@@ -5,6 +5,7 @@ class OrganizationAdmin::OrganizationsController < ApplicationController
   def new
     @organization = current_user.organizations.build
     @organization.build_organization_profile
+    @organization.build_organization_brand_assets
   end
 
   def create
@@ -19,6 +20,13 @@ class OrganizationAdmin::OrganizationsController < ApplicationController
       else
         format.html { render :new, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def settings
+    if @organization.organization_brand_asset.blank?
+      @organization.organization_brand_asset = OrganizationBrandAsset.new
+      @organization.organization_brand_asset.save!
     end
   end
 

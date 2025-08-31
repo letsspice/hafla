@@ -39,6 +39,7 @@ class Organization < ApplicationRecord
 
   # callbacks
   before_validation :set_subdomain
+  before_save :set_organization_brand_asset
 
   # instance methods
   def initials
@@ -54,5 +55,10 @@ class Organization < ApplicationRecord
     candidate = base_subdomain
     candidate = "#{base_subdomain}-#{SecureRandom.hex(4)}" while Organization.exists?(subdomain: candidate)
     self.subdomain = candidate
+  end
+
+  def set_organization_brand_asset
+    self.organization_brand_asset = OrganizationBrandAsset.new
+    self.organization_brand_asset.save!
   end
 end
