@@ -2,9 +2,7 @@
   <button data-action="click->dropdown#toggle" type="button" class="flex items-center gap-2 px-4 py-2 bg-black shadow-md hover:bg-black/80 rounded-md">
     <span class="bg-purple-200 text-purple-700 px-2 py-1 rounded-full text-xs font-medium"><%= @organization.initials %></span>
     <%= @organization.name %>
-    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
+    <i class="fas fa-chevron-down"></i>
   </button>
 
   <div data-dropdown-target="menu" class="hidden absolute right-0 mt-4 w-72 rounded-md shadow-lg bg-white text-black ring-1 ring-black ring-opacity-5 z-10">

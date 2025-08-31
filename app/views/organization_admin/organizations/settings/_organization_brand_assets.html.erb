@@ -576,32 +576,32 @@
             </div>
           </div>
         </div>
+      
       </div>
-
       <!-- Social Links Section -->
-      <div class="bg-white rounded-lg border border-gray-200 p-6 mb-6">
+      <div class="bg-white rounded-lg border border-gray-200 p-6 mb-6" data-controller="social-links">
         <div class="mb-6">
           <h2 class="text-xl font-semibold text-gray-900 mb-2">Social links</h2>
           <p class="text-sm text-gray-600">Social links for your business, often used in the theme footer</p>
         </div>
 
         <!-- Add Social Link Button -->
-        <div class="mb-6 relative" data-controller="dropdown">
+        <div class="mb-6 relative" data-controller="social-dropdown">
           <button type="button" 
                   class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 flex items-center space-x-2"
-                  data-action="click->dropdown#toggle">
+                  data-action="click->social-dropdown#toggle">
             <span>Add social link</span>
             <i class="fas fa-chevron-down w-4 h-4 transition-transform duration-200" 
-              data-dropdown-target="icon"></i>
+              data-social-dropdown-target="icon"></i>
           </button>
           
           <!-- Dropdown Menu -->
           <div class="absolute top-full left-0 mt-1 w-64 bg-white border border-gray-200 rounded-md shadow-lg z-20 opacity-0 invisible transition-all duration-200 max-h-80 overflow-y-auto"
-              data-dropdown-target="menu">
+              data-social-dropdown-target="menu">
             
             <!-- Instagram -->
             <button type="button" class="w-full flex items-center space-x-3 px-4 py-3 text-left hover:bg-gray-50 border-b border-gray-100 last:border-b-0"
-                    data-action="click->dropdown#selectSocialLink"
+                    data-action="click->social-dropdown#selectSocialLink"
                     data-platform="instagram">
               <div class="w-5 h-5 bg-gradient-to-br from-purple-600 to-pink-600 rounded-full flex items-center justify-center">
                 <i class="fab fa-instagram w-3 h-3 text-white"></i>
@@ -611,7 +611,7 @@
 
             <!-- LinkedIn -->
             <button type="button" class="w-full flex items-center space-x-3 px-4 py-3 text-left hover:bg-gray-50 border-b border-gray-100 last:border-b-0"
-                    data-action="click->dropdown#selectSocialLink"
+                    data-action="click->social-dropdown#selectSocialLink"
                     data-platform="linkedin">
               <div class="w-5 h-5 bg-blue-600 rounded flex items-center justify-center">
                 <i class="fab fa-linkedin w-3 h-3 text-white"></i>
@@ -621,7 +621,7 @@
 
             <!-- Pinterest -->
             <button type="button" class="w-full flex items-center space-x-3 px-4 py-3 text-left hover:bg-gray-50 border-b border-gray-100 last:border-b-0"
-                    data-action="click->dropdown#selectSocialLink"
+                    data-action="click->social-dropdown#selectSocialLink"
                     data-platform="pinterest">
               <div class="w-5 h-5 bg-red-600 rounded flex items-center justify-center">
                 <i class="fab fa-pinterest w-3 h-3 text-white"></i>
@@ -631,7 +631,7 @@
 
             <!-- Snapchat -->
             <button type="button" class="w-full flex items-center space-x-3 px-4 py-3 text-left hover:bg-gray-50 border-b border-gray-100 last:border-b-0"
-                    data-action="click->dropdown#selectSocialLink"
+                    data-action="click->social-dropdown#selectSocialLink"
                     data-platform="snapchat">
               <div class="w-5 h-5 bg-yellow-400 rounded flex items-center justify-center">
                 <i class="fab fa-snapchat w-3 h-3 text-white"></i>
@@ -641,7 +641,7 @@
 
             <!-- WhatsApp -->
             <button type="button" class="w-full flex items-center space-x-3 px-4 py-3 text-left hover:bg-gray-50 border-b border-gray-100 last:border-b-0"
-                    data-action="click->dropdown#selectSocialLink"
+                    data-action="click->social-dropdown#selectSocialLink"
                     data-platform="whatsapp">
               <div class="w-5 h-5 bg-green-500 rounded flex items-center justify-center">
                 <i class="fab fa-whatsapp w-3 h-3 text-white"></i>
@@ -651,7 +651,7 @@
 
             <!-- Discord -->
             <button type="button" class="w-full flex items-center space-x-3 px-4 py-3 text-left hover:bg-gray-50 border-b border-gray-100 last:border-b-0"
-                    data-action="click->dropdown#selectSocialLink"
+                    data-action="click->social-dropdown#selectSocialLink"
                     data-platform="discord">
               <div class="w-5 h-5 bg-indigo-600 rounded flex items-center justify-center">
                     <i class="fab fa-discord w-3 h-3 text-white"></i>
@@ -661,75 +661,220 @@
           </div>
         </div>
 
-        <!-- Social Media Links -->
-        <div class="space-y-6">
+        <!-- Social Media Links Container -->
+        <div class="space-y-6" data-social-links-target="container">
           <!-- Facebook -->
-          <div class="flex items-start justify-between">
+          <div class="flex items-start justify-between social-platform-item" data-social-platform="facebook">
             <div class="flex-1">
               <label class="block text-sm font-medium text-gray-900 mb-2">Facebook</label>
               <div class="relative">
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <i class="fab fa-facebook h-5 w-5 text-blue-600"></i>
                 </div>
-                <input type="url" 
-                      class="w-full text-sm border border-gray-300 rounded-md pl-10 pr-3 py-2" 
-                      placeholder="https://facebook.com/hafla"
-                      value="<%= @organization.organization_brand_asset&.facebook_url %>">
+                <%= brand_form.text_field :facebook_url, 
+                    type: "url",
+                    class: "w-full text-sm border border-gray-300 rounded-md pl-10 pr-3 py-2 social-url-input", 
+                    placeholder: "https://facebook.com/hafla" %>
               </div>
             </div>
-            <button type="button" class="ml-4 text-red-600 hover:text-red-700 text-sm font-medium mt-8">Remove</button>
+            <button type="button" class="ml-4 text-red-600 hover:text-red-700 text-sm font-medium mt-8 remove-platform-btn" 
+                    data-platform="facebook"
+                    data-action="click->social-links#removePlatform">Remove</button>
           </div>
 
           <!-- X (Twitter) -->
-          <div class="flex items-start justify-between">
+          <div class="flex items-start justify-between social-platform-item" data-social-platform="twitter">
             <div class="flex-1">
               <label class="block text-sm font-medium text-gray-900 mb-2">X</label>
               <div class="relative">
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <i class="fab fa-x-twitter h-5 w-5 text-gray-900"></i>
                 </div>
-                <input type="url" 
-                      class="w-full text-sm border border-gray-300 rounded-md pl-10 pr-3 py-2" 
-                      placeholder="https://x.com/hafla"
-                      value="<%= @organization.organization_brand_asset&.twitter_url %>">
+                <%= brand_form.text_field :twitter_url, 
+                    type: "url",
+                    class: "w-full text-sm border border-gray-300 rounded-md pl-10 pr-3 py-2 social-url-input", 
+                    placeholder: "https://x.com/hafla" %>
               </div>
             </div>
-            <button type="button" class="ml-4 text-red-600 hover:text-red-700 text-sm font-medium mt-8">Remove</button>
+            <button type="button" class="ml-4 text-red-600 hover:text-red-700 text-sm font-medium mt-8 remove-platform-btn" 
+                    data-platform="twitter"
+                    data-action="click->social-links#removePlatform">Remove</button>
           </div>
 
           <!-- TikTok -->
-          <div class="flex items-start justify-between">
+          <div class="flex items-start justify-between social-platform-item" data-social-platform="tiktok">
             <div class="flex-1">
               <label class="block text-sm font-medium text-gray-900 mb-2">TikTok</label>
               <div class="relative">
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <i class="fab fa-tiktok h-5 w-5 text-black"></i>
                 </div>
-                <input type="url" 
-                      class="w-full text-sm border border-gray-300 rounded-md pl-10 pr-3 py-2" 
-                      placeholder="https://tiktok.com/@hafla"
-                      value="<%= @organization.organization_brand_asset&.tiktok_url %>">
+                <%= brand_form.text_field :tiktok_url, 
+                    type: "url",
+                    class: "w-full text-sm border border-gray-300 rounded-md pl-10 pr-3 py-2 social-url-input", 
+                    placeholder: "https://tiktok.com/@hafla" %>
               </div>
             </div>
-            <button type="button" class="ml-4 text-red-600 hover:text-red-700 text-sm font-medium mt-8">Remove</button>
+            <button type="button" class="ml-4 text-red-600 hover:text-red-700 text-sm font-medium mt-8 remove-platform-btn" 
+                    data-platform="tiktok"
+                    data-action="click->social-links#removePlatform">Remove</button>
           </div>
 
           <!-- YouTube -->
-          <div class="flex items-start justify-between">
+          <div class="flex items-start justify-between social-platform-item" data-social-platform="youtube">
             <div class="flex-1">
               <label class="block text-sm font-medium text-gray-900 mb-2">YouTube</label>
               <div class="relative">
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <i class="fab fa-youtube h-5 w-5 text-red-600"></i>
                 </div>
-                <input type="url" 
-                      class="w-full text-sm border border-gray-300 rounded-md pl-10 pr-3 py-2" 
-                      placeholder="https://youtube.com/c/hafla"
-                      value="<%= @organization.organization_brand_asset&.youtube_url %>">
+                <%= brand_form.text_field :youtube_url, 
+                    type: "url",
+                    class: "w-full text-sm border border-gray-300 rounded-md pl-10 pr-3 py-2 social-url-input", 
+                    placeholder: "https://youtube.com/c/hafla" %>
               </div>
             </div>
-            <button type="button" class="ml-4 text-red-600 hover:text-red-700 text-sm font-medium mt-8">Remove</button>
+            <button type="button" class="ml-4 text-red-600 hover:text-red-700 text-sm font-medium mt-8 remove-platform-btn" 
+                    data-platform="youtube"
+                    data-action="click->social-links#removePlatform">Remove</button>
           </div>
+
+          <!-- Instagram -->
+          <div class="flex items-start justify-between social-platform-item hidden" data-social-platform="instagram">
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-gray-900 mb-2">Instagram</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <i class="fab fa-instagram h-5 w-5 text-pink-600"></i>
+                </div>
+                <%= brand_form.text_field :instagram_url, 
+                    type: "url",
+                    class: "w-full text-sm border border-gray-300 rounded-md pl-10 pr-3 py-2 social-url-input", 
+                    placeholder: "https://instagram.com/username" %>
+              </div>
+            </div>
+            <button type="button" class="ml-4 text-red-600 hover:text-red-700 text-sm font-medium mt-8 remove-platform-btn" 
+                    data-platform="instagram"
+                    data-action="click->social-links#removePlatform">Remove</button>
+          </div>
+
+          <!-- LinkedIn -->
+          <div class="flex items-start justify-between social-platform-item hidden" data-social-platform="linkedin">
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-gray-900 mb-2">LinkedIn</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <i class="fab fa-linkedin h-5 w-5 text-blue-600"></i>
+                </div>
+                <%= brand_form.text_field :linkedin_url, 
+                    type: "url",
+                    class: "w-full text-sm border border-gray-300 rounded-md pl-10 pr-3 py-2 social-url-input", 
+                    placeholder: "https://linkedin.com/company/company-name" %>
+              </div>
+            </div>
+            <button type="button" class="ml-4 text-red-600 hover:text-red-700 text-sm font-medium mt-8 remove-platform-btn" 
+                    data-platform="linkedin"
+                    data-action="click->social-links#removePlatform">Remove</button>
+          </div>
+
+          <!-- Pinterest -->
+          <div class="flex items-start justify-between social-platform-item hidden" data-social-platform="pinterest">
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-gray-900 mb-2">Pinterest</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <i class="fab fa-pinterest h-5 w-5 text-red-600"></i>
+                </div>
+                <%= brand_form.text_field :pinterest_url, 
+                    type: "url",
+                    class: "w-full text-sm border border-gray-300 rounded-md pl-10 pr-3 py-2 social-url-input", 
+                    placeholder: "https://pinterest.com/username" %>
+              </div>
+            </div>
+            <button type="button" class="ml-4 text-red-600 hover:text-red-700 text-sm font-medium mt-8 remove-platform-btn" 
+                    data-platform="pinterest"
+                    data-action="click->social-links#removePlatform">Remove</button>
+          </div>
+
+          <!-- Snapchat -->
+          <div class="flex items-start justify-between social-platform-item hidden" data-social-platform="snapchat">
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-gray-900 mb-2">Snapchat</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <i class="fab fa-snapchat h-5 w-5 text-yellow-400"></i>
+                </div>
+                <%= brand_form.text_field :snapchat_url, 
+                    type: "url",
+                    class: "w-full text-sm border border-gray-300 rounded-md pl-10 pr-3 py-2 social-url-input", 
+                    placeholder: "https://snapchat.com/add/username" %>
+              </div>
+            </div>
+            <button type="button" class="ml-4 text-red-600 hover:text-red-700 text-sm font-medium mt-8 remove-platform-btn" 
+                    data-platform="snapchat"
+                    data-action="click->social-links#removePlatform">Remove</button>
+          </div>
+
+          <!-- WhatsApp -->
+          <div class="flex items-start justify-between social-platform-item hidden" data-social-platform="whatsapp">
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-gray-900 mb-2">WhatsApp</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <i class="fab fa-whatsapp h-5 w-5 text-green-500"></i>
+                </div>
+                <%= brand_form.text_field :whatsapp_url, 
+                    type: "url",
+                    class: "w-full text-sm border border-gray-300 rounded-md pl-10 pr-3 py-2 social-url-input", 
+                    placeholder: "https://wa.me/phone-number" %>
+              </div>
+            </div>
+            <button type="button" class="ml-4 text-red-600 hover:text-red-700 text-sm font-medium mt-8 remove-platform-btn" 
+                    data-platform="whatsapp"
+                    data-action="click->social-links#removePlatform">Remove</button>
+          </div>
+
+          <!-- Discord -->
+          <div class="flex items-start justify-between social-platform-item hidden" data-social-platform="discord">
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-gray-900 mb-2">Discord</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <i class="fab fa-discord h-5 w-5 text-indigo-600"></i>
+                </div>
+                <%= brand_form.text_field :discord_url, 
+                    type: "url",
+                    class: "w-full text-sm border border-gray-300 rounded-md pl-10 pr-3 py-2 social-url-input", 
+                    placeholder: "https://discord.gg/invite-code" %>
+              </div>
+            </div>
+            <button type="button" class="ml-4 text-red-600 hover:text-red-700 text-sm font-medium mt-8 remove-platform-btn" 
+                    data-platform="discord"
+                    data-action="click->social-links#removePlatform">Remove</button>
+          </div>
+
+          <!-- Template for new social platforms (hidden) -->
+          <template data-social-links-target="template">
+            <div class="flex items-start justify-between social-platform-item">
+              <div class="flex-1">
+                <label class="block text-sm font-medium text-gray-900 mb-2">
+                  <span class="platform-name">Platform Name</span>
+                </label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <div class="w-5 h-5 rounded-full flex items-center justify-center platform-icon">
+                      <i class="fas fa-link text-white"></i>
+                    </div>
+                  </div>
+                  <input type="url" 
+                        class="w-full text-sm border border-gray-300 rounded-md pl-10 pr-3 py-2 social-url-input" 
+                        placeholder="Enter URL...">
+                </div>
+              </div>
+              <button type="button" class="ml-4 text-red-600 hover:text-red-700 text-sm font-medium mt-8 remove-platform-btn" 
+                      data-action="click->social-links#removePlatform">Remove</button>
+            </div>
+          </template>
         </div>
       </div>
     </div>

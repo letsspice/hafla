@@ -60,9 +60,9 @@ class OrganizationAdmin::OrganizationsController < ApplicationController
       organization_brand_asset_attributes: %i[
         id logo cover_image slogan 
         facebook_url twitter_url tiktok_url youtube_url 
-        instagram_url linkedin_url website_url
+        instagram_url linkedin_url pinterest_url
         discord_url snapchat_url spotify_url threads_url
-        primary_color secondary_color description
+        whatsapp_url primary_color secondary_color description
       ]
     )
   end

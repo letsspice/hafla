@@ -1,10 +1,14 @@
-// app/javascript/controllers/dropdown_controller.js
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static targets = ["menu", "icon"]
 
   connect() {
+    console.log('Social Dropdown Controller: Connected')
+    console.log('Social Dropdown Controller: Available targets:', this.targets)
+    console.log('Social Dropdown Controller: Has menu target:', this.hasMenuTarget)
+    console.log('Social Dropdown Controller: Has icon target:', this.hasIconTarget)
+    
     // Close dropdown when clicking outside
     document.addEventListener('click', this.handleClickOutside.bind(this))
   }
@@ -16,7 +20,7 @@ export default class extends Controller {
   toggle(event) {
     event.stopPropagation()
     
-    if (this.menuTarget.classList.contains('opacity-0')) {
+    if (this.hasMenuTarget && this.menuTarget.classList.contains('opacity-0')) {
       this.show()
     } else {
       this.hide()
@@ -53,27 +57,21 @@ export default class extends Controller {
 
   selectSocialLink(event) {
     const platform = event.currentTarget.dataset.platform
-    console.log('Dropdown: Selecting platform:', platform)
+    console.log('Social Dropdown: Selecting platform:', platform)
     this.hide()
     
-    // Find the social links controller by looking up the DOM tree
-    const socialLinksElement = this.element.closest('[data-controller*="social-links"]')
-    console.log('Dropdown: Social links element:', socialLinksElement)
+    // Dispatch a regular DOM event that bubbles up
+    const customEvent = new CustomEvent('socialPlatformSelected', {
+      detail: {
+        platform: platform,
+        platformName: this.getPlatformName(platform)
+      },
+      bubbles: true,
+      composed: true
+    })
     
-    if (socialLinksElement) {
-      // Use the Stimulus application to get the controller
-      const socialLinksController = this.application.getControllerForElementAndIdentifier(socialLinksElement, "social-links")
-      console.log('Dropdown: Social links controller:', socialLinksController)
-      
-      if (socialLinksController) {
-        console.log('Dropdown: Found social links controller, calling addSocialPlatform')
-        socialLinksController.addSocialPlatform(platform, this.getPlatformName(platform))
-      } else {
-        console.log('Dropdown: No controller instance found')
-      }
-    } else {
-      console.log('Dropdown: No social links element found')
-    }
+    console.log('Social Dropdown: Dispatching DOM event for platform:', platform)
+    this.element.dispatchEvent(customEvent)
   }
 
   getPlatformName(platform) {
@@ -88,4 +86,3 @@ export default class extends Controller {
     return platformNames[platform] || platform.charAt(0).toUpperCase() + platform.slice(1)
   }
 }
-

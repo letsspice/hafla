@@ -72,6 +72,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_08_31_065824) do
     t.string "threads_url", limit: 500
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "pinterest_url", limit: 500
+    t.string "whatsapp_url", limit: 500
     t.index ["organization_id"], name: "index_organization_brand_assets_on_organization_id"
   end
 

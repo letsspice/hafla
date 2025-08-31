@@ -8,6 +8,7 @@
 #  facebook_url    :string(500)
 #  instagram_url   :string(500)
 #  linkedin_url    :string(500)
+#  pinterest_url   :string(500)
 #  primary_color   :string(7)
 #  secondary_color :string(7)
 #  slogan          :string(255)
@@ -16,6 +17,7 @@
 #  threads_url     :string(500)
 #  tiktok_url      :string(500)
 #  twitter_url     :string(500)
+#  whatsapp_url    :string(500)
 #  youtube_url     :string(500)
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
