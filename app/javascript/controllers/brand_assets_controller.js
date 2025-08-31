@@ -163,10 +163,4 @@ export default class extends Controller {
       }
     }
   }
-
-  // Form submission handling
-  beforeSubmit(event) {
-    // You can add validation here if needed
-    console.log("Submitting brand assets form...")
-  }
 }

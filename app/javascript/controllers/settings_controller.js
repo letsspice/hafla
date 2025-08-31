@@ -113,7 +113,6 @@ export default class extends Controller {
     const color = colorElement.dataset.color
     const colorType = colorElement.dataset.colorType
     
-    console.log(`Preset color selected - Color: ${color}, Type: ${colorType}`)
     
     // Update the color display
     this.updateColorDisplay(colorType, color)
@@ -157,7 +156,6 @@ export default class extends Controller {
   }
 
   updateFormFields(event) {
-    console.log('Updating form fields before save...')
     
     // Update primary color form field
     const primaryColor = this.getCurrentColor('primary')
@@ -170,7 +168,6 @@ export default class extends Controller {
     // Clean and validate all color form fields before submission
     this.cleanColorFormFields()
     
-    console.log('Form fields updated and cleaned, proceeding with save...')
   }
 
   cleanColorFormFields() {
@@ -180,10 +177,8 @@ export default class extends Controller {
       const cleanedValue = primaryField.value.trim()
       if (this.isValidHex(cleanedValue)) {
         primaryField.value = cleanedValue
-        console.log(`Cleaned primary color: "${cleanedValue}"`)
       } else {
         primaryField.value = '#3B82F6'
-        console.log('Invalid primary color, reset to default')
       }
     }
     
@@ -193,10 +188,8 @@ export default class extends Controller {
       const cleanedValue = secondaryField.value.trim()
       if (this.isValidHex(cleanedValue)) {
         secondaryField.value = cleanedValue
-        console.log(`Cleaned secondary color: "${cleanedValue}"`)
       } else {
         secondaryField.value = '#8B5CF6'
-        console.log('Invalid secondary color, reset to default')
       }
     }
   }
@@ -238,7 +231,7 @@ export default class extends Controller {
     if (formField) {
       formField.value = hex
     } else {
-      console.log(`No form field found by name for ${colorType}_color`)
+      console.warn(`No form field found by name for ${colorType}_color`)
     }
     
     // Try to find the form field by the exact name pattern
@@ -246,16 +239,9 @@ export default class extends Controller {
     if (exactFormField) {
       exactFormField.value = hex
     } else {
-      console.log(`No exact form field found for ${colorType}_color`)
+      console.warn(`No exact form field found for ${colorType}_color`)
     }
     
-    // Log all form fields to debug
-    const allFormFields = document.querySelectorAll('input[type="text"], input[type="hidden"]')
-    allFormFields.forEach(field => {
-      if (field.name && field.name.includes('color')) {
-        console.log(`Form field: ${field.name} = ${field.value}`) //eslint-disable-line
-      }
-    })
   }
 
   getColorHandle(colorType) {
@@ -324,8 +310,7 @@ export default class extends Controller {
     
     const left = parseFloat(handle.style.left) / 100
     const hue = left * 360
-    
-    console.log(`Getting current hue - ColorType: ${colorType}, Left: ${handle.style.left}, Parsed: ${left}, Hue: ${hue}`)
+
     
     return hue
   }
@@ -347,16 +332,14 @@ export default class extends Controller {
   }
 
   updateColorDisplay(colorType, hex) {
-    console.log(`Updating color display - ColorType: ${colorType}, Hex: ${hex}`)
     
     // Update the main color swatch (the large 12x12 preview)
     const mainColorSwatch = document.querySelector(`[data-color-type="${colorType}"][data-color-role="main-swatch"]`)
     if (mainColorSwatch) {
       mainColorSwatch.style.backgroundColor = hex
       mainColorSwatch.dataset.currentColor = hex
-      console.log(`Updated main color swatch for ${colorType}:`, mainColorSwatch)
     } else {
-      console.log(`No main color swatch found for ${colorType}`)
+      console.warn(`No main color swatch found for ${colorType}`)
     }
     
     // Also update any other color swatches with the same color type (fallback)
@@ -377,9 +360,6 @@ export default class extends Controller {
     
     // Update hex input fields
     this.updateHexInput(colorType, hex)
-    
-    // Save to server
-    this.saveColorToServer(colorType, hex)
   }
 
   // Color conversion utilities
@@ -466,32 +446,5 @@ export default class extends Controller {
     }
     
     return { h: h * 360, s: s * 100, l: l * 100 }
-  }
-
-  saveColorToServer(colorType, color) {
-    // This method would typically make an AJAX call to save the color
-    // For now, we'll just log it to the console
-    
-    // Example AJAX call (uncomment and modify as needed):
-    /*
-    fetch('/organization_admin/organizations/update_color', {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': document.querySelector('[name="csrf-token"]').content
-      },
-      body: JSON.stringify({
-        color_type: colorType,
-        color: color
-      })
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Color saved successfully:', data)
-    })
-    .catch(error => {
-      console.error('Error saving color:', error)
-    })
-    */
   }
 }
