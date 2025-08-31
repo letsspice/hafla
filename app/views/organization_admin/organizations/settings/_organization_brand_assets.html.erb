@@ -1,0 +1,69 @@
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+  <div class="flex items-center mb-4">
+    <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
+      <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z"></path>
+      </svg>
+    </div>
+    <h2 class="text-xl font-semibold text-gray-900">Brand Assets</h2>
+  </div>
+  <p class="text-gray-600 mb-4">Upload and manage your organization's logos, colors, and brand materials.</p>
+
+  <div class="space-y-4">
+
+  <%= form_for [:organization_admin, @organization] do |f| %>
+    <%= render 'shared/errors', object: f.object %>
+
+    <div class="space-y-4">
+      <%= f.fields_for :organization_brand_assets do |obf| %>
+        <div class="space-y-2">
+          <%= obf.label :logo, class: "label" %>
+          <%= obf.file_field :logo, class: "input-field" %>
+        </div>
+
+        <div class="space-y-2">
+          <%= obf.label :cover_image, class: "label" %>
+          <%= obf.file_field :cover_image, class: "input-field" %>
+        </div>
+
+        <div class="space-y-2">
+          <%= obf.label :primary_color, class: "label" %>
+          <%= obf.color_field :primary_color, class: "input-field" %>
+        </div>
+
+        <div class="space-y-2">
+          <%= obf.label :secondary_color, class: "label" %>
+          <%= obf.color_field :secondary_color, class: "input-field" %>
+        </div>
+
+        <div class="space-y-2">
+          <%= obf.label :slogan, class: "label" %>
+          <%= obf.text_field :slogan, class: "input-field" %>
+        </div>
+
+        <div class="space-y-2">
+          <%= obf.label :instagram_url, class: "label" %>
+          <%= obf.url_field :instagram_url, class: "input-field" %>
+        </div>
+
+        <div class="space-y-2">
+          <%= obf.label :twitter_url, class: "label" %>
+          <%= obf.url_field :twitter_url, class: "input-field" %>
+        </div>
+
+        <div class="space-y-2">
+          <%= obf.label :facebook_url, class: "label" %>
+          <%= obf.url_field :facebook_url, class: "input-field" %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+    
+    <div class="pt-4">
+      <button type="button" class="w-full bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+        Save Brand Assets
+      </button>
+    </div>
+  </div>
+</div>

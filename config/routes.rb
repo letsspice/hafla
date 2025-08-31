@@ -13,7 +13,11 @@ Rails.application.routes.draw do
   resources :organization_profiles
 
   namespace :organization_admin do
-    resources :organizations
+    resources :organizations do
+      member do
+        get 'settings'
+      end
+    end
   end
 
 end

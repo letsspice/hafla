@@ -1,0 +1,61 @@
+<div class="flex h-screen bg-gray-50" data-controller="settings">
+  <!-- Left Sidebar Navigation -->
+  <div class="w-64 min-h-[80%] fixed bg-white border rounded mt-8 border-gray-200 flex flex-col text-xs">
+    <!-- Organization Header -->
+    <div class="p-4 border-b border-gray-200">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center">
+          <span class="text-white  font-semibold"><%= @organization.initials %></span>
+        </div>
+        <div>
+          <h3 class="font-semibold text-gray-900"><%= @organization.name %></h3>
+          <p class=" text-gray-500"><%= @organization.subdomain %>.hafla.com</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Links -->
+    <nav class="flex-1 p-4 space-y-1">
+      <a href="#profile" class="flex items-center px-3 py-2  font-medium text-gray-900 bg-gray-100 rounded-md" data-action="click->settings#showSection" data-section="profile" data-settings-target="profileLink">
+        <svg class="w-5 h-5 mr-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+        </svg>
+        Profile
+      </a>
+      <a href="#brand-assets" class="flex items-center px-3 py-2  font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md" data-action="click->settings#showSection" data-section="brand-assets" data-settings-target="brandAssetsLink">
+        <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z"></path>
+        </svg>
+        Brand Assets
+      </a>
+    </nav>
+
+    <!-- Admin Footer -->
+    <div class="p-4 border-t border-gray-200">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 bg-gray-600 rounded-lg flex items-center justify-center">
+          <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+          </svg>
+        </div>
+        <div>
+          <h3 class=" font-medium text-gray-900">Organization Admin</h3>
+          <p class="text-xs text-gray-500">admin@hafla.com</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="flex-1 overflow-auto ml-64">
+    <!-- Profile Section -->
+    <div id="profile-section" class="p-8" data-settings-target="profileSection">     
+      <%= render 'organization_admin/organizations/settings/organization_profile' %>
+    </div>
+
+    <!-- Brand Assets Section -->
+    <div id="brand-assets-section" class="p-8 hidden" data-settings-target="brandAssetsSection">
+      <%= render 'organization_admin/organizations/settings/organization_brand_assets' %>
+    </div>
+  </div>
+</div>

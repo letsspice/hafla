@@ -6,6 +6,7 @@
 #  city            :string           not null
 #  country         :string           not null
 #  currency        :string           not null
+#  description     :text
 #  phone           :string           not null
 #  phone_code      :string           not null
 #  timezone        :string           not null

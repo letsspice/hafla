@@ -29,7 +29,9 @@ class Organization < ApplicationRecord
   # associations
   belongs_to :user
   has_one :organization_profile, dependent: :destroy
+  has_one :organization_brand_asset, dependent: :destroy
   accepts_nested_attributes_for :organization_profile
+  accepts_nested_attributes_for :organization_brand_asset
 
   # validations
   validates :name, presence: true, uniqueness: { scope: :user_id }

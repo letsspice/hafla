@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_05_23_123105) do
+ActiveRecord::Schema[7.1].define(version: 2025_08_31_070223) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -54,6 +54,26 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_23_123105) do
     t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
   end
 
+  create_table "organization_brand_assets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "organization_id", null: false
+    t.string "primary_color", limit: 7
+    t.string "secondary_color", limit: 7
+    t.string "slogan", limit: 255
+    t.string "instagram_url", limit: 500
+    t.string "twitter_url", limit: 500
+    t.string "facebook_url", limit: 500
+    t.string "tiktok_url", limit: 500
+    t.string "youtube_url", limit: 500
+    t.string "snapchat_url", limit: 500
+    t.string "linkedin_url", limit: 500
+    t.string "discord_url", limit: 500
+    t.string "spotify_url", limit: 500
+    t.string "threads_url", limit: 500
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id"], name: "index_organization_brand_assets_on_organization_id"
+  end
+
   create_table "organization_profiles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "organization_id", null: false
     t.string "phone_code", null: false
@@ -64,6 +84,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_23_123105) do
     t.string "timezone", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "description"
     t.index ["organization_id"], name: "index_organization_profiles_on_organization_id"
   end
 
@@ -114,6 +135,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_23_123105) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "organization_brand_assets", "organizations", on_delete: :cascade
   add_foreign_key "organization_profiles", "organizations"
   add_foreign_key "organizations", "users"
 end
