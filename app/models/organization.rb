@@ -39,7 +39,7 @@ class Organization < ApplicationRecord
 
   # callbacks
   before_validation :set_subdomain
-  before_save :set_organization_brand_asset
+  before_create :set_organization_brand_asset
 
   # instance methods
   def initials
@@ -58,7 +58,8 @@ class Organization < ApplicationRecord
   end
 
   def set_organization_brand_asset
+    return if organization_brand_asset.present?
+    
     self.organization_brand_asset = OrganizationBrandAsset.new
-    self.organization_brand_asset.save!
   end
 end

@@ -13,6 +13,9 @@ export default class extends Controller {
       // Show profile section by default if no preference saved
       this.switchToSection("profile")
     }
+    
+    // Initialize color pickers
+    this.initializeColorPickers()
   }
 
   showSection(event) {
@@ -105,6 +108,99 @@ export default class extends Controller {
     }
   }
 
+  selectPresetColor(event) {
+    const colorElement = event.currentTarget
+    const color = colorElement.dataset.color
+    const colorType = colorElement.dataset.colorType
+    
+    console.log(`Preset color selected - Color: ${color}, Type: ${colorType}`)
+    
+    // Update the color display
+    this.updateColorDisplay(colorType, color)
+    
+    // Update the hex input field
+    this.updateHexInput(colorType, color)
+    
+    // Update RGB inputs
+    this.updateRGBFromHex(colorType, color)
+    
+    // Add visual feedback
+    colorElement.classList.add('ring-2', 'ring-blue-500')
+    setTimeout(() => {
+      colorElement.classList.remove('ring-2', 'ring-blue-500')
+    }, 300)
+  }
+
+  initializeColorPickers() {
+    
+    // Initialize primary color picker
+    const primaryColor = this.getCurrentColor('primary')
+    if (primaryColor) {
+      this.updateRGBFromHex('primary', primaryColor)
+      // Ensure the hex input is properly set
+      this.updateHexInput('primary', primaryColor)
+    }
+    
+    // Initialize secondary color picker
+    const secondaryColor = this.getCurrentColor('secondary')
+    if (secondaryColor) {
+      this.updateRGBFromHex('secondary', secondaryColor)
+      // Ensure the hex input is properly set
+      this.updateHexInput('secondary', secondaryColor)
+    }
+    
+    // Force update form fields after a short delay to ensure they're properly set
+    setTimeout(() => {
+      this.updateHexInput('primary', this.getCurrentColor('primary'))
+      this.updateHexInput('secondary', this.getCurrentColor('secondary'))
+    }, 100)
+  }
+
+  updateFormFields(event) {
+    console.log('Updating form fields before save...')
+    
+    // Update primary color form field
+    const primaryColor = this.getCurrentColor('primary')
+    this.updateHexInput('primary', primaryColor)
+    
+    // Update secondary color form field
+    const secondaryColor = this.getCurrentColor('secondary')
+    this.updateHexInput('secondary', secondaryColor)
+    
+    // Clean and validate all color form fields before submission
+    this.cleanColorFormFields()
+    
+    console.log('Form fields updated and cleaned, proceeding with save...')
+  }
+
+  cleanColorFormFields() {
+    // Clean primary color field
+    const primaryField = document.querySelector('input[name*="primary_color"]')
+    if (primaryField) {
+      const cleanedValue = primaryField.value.trim()
+      if (this.isValidHex(cleanedValue)) {
+        primaryField.value = cleanedValue
+        console.log(`Cleaned primary color: "${cleanedValue}"`)
+      } else {
+        primaryField.value = '#3B82F6'
+        console.log('Invalid primary color, reset to default')
+      }
+    }
+    
+    // Clean secondary color field
+    const secondaryField = document.querySelector('input[name*="secondary_color"]')
+    if (secondaryField) {
+      const cleanedValue = secondaryField.value.trim()
+      if (this.isValidHex(cleanedValue)) {
+        secondaryField.value = cleanedValue
+        console.log(`Cleaned secondary color: "${cleanedValue}"`)
+      } else {
+        secondaryField.value = '#8B5CF6'
+        console.log('Invalid secondary color, reset to default')
+      }
+    }
+  }
+
   isValidHex(hex) {
     return /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(hex)
   }
@@ -122,11 +218,44 @@ export default class extends Controller {
   }
 
   updateHexInput(colorType, hex) {
-    // Update hex input field
-    const hexInput = document.querySelector(`[data-color-type="${colorType}"][data-action*="updateHex"]`)
-    if (hexInput) {
-      hexInput.value = hex
+    
+    // Update hex input fields specifically marked as hex inputs
+    const hexInputs = document.querySelectorAll(`[data-color-type="${colorType}"][data-input-type="hex"]`)
+    hexInputs.forEach(input => {
+      input.value = hex
+    })
+    
+    // Also update any hex inputs with the action attribute as fallback
+    const actionHexInputs = document.querySelectorAll(`[data-color-type="${colorType}"][data-action*="updateHex"]`)
+    actionHexInputs.forEach(input => {
+      if (!input.dataset.inputType || input.dataset.inputType === 'hex') {
+        input.value = hex
+      }
+    })
+    
+    // Also try to find the form field by name attribute as a fallback
+    const formField = document.querySelector(`input[name*="[${colorType}_color]"]`)
+    if (formField) {
+      formField.value = hex
+    } else {
+      console.log(`No form field found by name for ${colorType}_color`)
     }
+    
+    // Try to find the form field by the exact name pattern
+    const exactFormField = document.querySelector(`input[name*="organization_brand_asset_attributes"][name*="${colorType}_color"]`)
+    if (exactFormField) {
+      exactFormField.value = hex
+    } else {
+      console.log(`No exact form field found for ${colorType}_color`)
+    }
+    
+    // Log all form fields to debug
+    const allFormFields = document.querySelectorAll('input[type="text"], input[type="hidden"]')
+    allFormFields.forEach(field => {
+      if (field.name && field.name.includes('color')) {
+        console.log(`Form field: ${field.name} = ${field.value}`) //eslint-disable-line
+      }
+    })
   }
 
   getColorHandle(colorType) {
@@ -151,17 +280,28 @@ export default class extends Controller {
     const saturation = x * 100
     const lightness = (1 - y) * 100
     
-    const hex = this.hslToHex(hue, saturation, lightness)
+    // Ensure values are within valid ranges
+    const clampedSaturation = Math.max(0, Math.min(100, saturation))
+    const clampedLightness = Math.max(0, Math.min(100, lightness))
+    
+    const hex = this.hslToHex(hue, clampedSaturation, clampedLightness)
     this.updateColorDisplay(colorType, hex)
   }
 
   updateHue(colorType, huePosition) {
     const hue = huePosition * 360
     const currentColor = this.getCurrentColor(colorType)
-    const { saturation, lightness } = this.hexToHsl(currentColor)
+    const hsl = this.hexToHsl(currentColor)
+  
     
-    const hex = this.hslToHex(hue, saturation, lightness)
-    this.updateColorDisplay(colorType, hex)
+    if (hsl && hsl.s !== undefined && hsl.l !== undefined) {
+      const hex = this.hslToHex(hue, hsl.s, hsl.l)
+      this.updateColorDisplay(colorType, hex)
+    } else {
+      // Fallback to default values if HSL conversion fails
+      const hex = this.hslToHex(hue, 50, 50)
+      this.updateColorDisplay(colorType, hex)
+    }
   }
 
   updateColorFromRGB(colorType, component, value) {
@@ -178,22 +318,55 @@ export default class extends Controller {
 
   getCurrentHue(colorType) {
     const handle = this.getHueHandle(colorType)
+    if (!handle || !handle.style.left) {
+      return 0
+    }
+    
     const left = parseFloat(handle.style.left) / 100
-    return left * 360
+    const hue = left * 360
+    
+    console.log(`Getting current hue - ColorType: ${colorType}, Left: ${handle.style.left}, Parsed: ${left}, Hue: ${hue}`)
+    
+    return hue
   }
 
   getCurrentColor(colorType) {
     if (colorType === 'primary') {
-      return this.primaryColorHexTarget.textContent
+      if (this.hasPrimaryColorHexTarget) {
+        const color = this.primaryColorHexTarget.textContent
+        return color && color !== '' ? color : '#3B82F6'
+      }
+      return '#3B82F6'
     } else if (colorType === 'secondary') {
-      return this.secondaryColorHexTarget.textContent
+      if (this.hasSecondaryColorHexTarget) {
+        const color = this.secondaryColorHexTarget.textContent
+        return color && color !== '' ? color : '#8B5CF6'
+      }
+      return '#8B5CF6'
     }
   }
 
   updateColorDisplay(colorType, hex) {
-    // Update the color swatch
-    const colorSwatch = document.querySelector(`[data-color-type="${colorType}"]`)
-    colorSwatch.style.backgroundColor = hex
+    console.log(`Updating color display - ColorType: ${colorType}, Hex: ${hex}`)
+    
+    // Update the main color swatch (the large 12x12 preview)
+    const mainColorSwatch = document.querySelector(`[data-color-type="${colorType}"][data-color-role="main-swatch"]`)
+    if (mainColorSwatch) {
+      mainColorSwatch.style.backgroundColor = hex
+      mainColorSwatch.dataset.currentColor = hex
+      console.log(`Updated main color swatch for ${colorType}:`, mainColorSwatch)
+    } else {
+      console.log(`No main color swatch found for ${colorType}`)
+    }
+    
+    // Also update any other color swatches with the same color type (fallback)
+    const allColorSwatches = document.querySelectorAll(`[data-color-type="${colorType}"]`)
+    allColorSwatches.forEach(swatch => {
+      if (swatch !== mainColorSwatch) {
+        swatch.style.backgroundColor = hex
+        swatch.dataset.currentColor = hex
+      }
+    })
     
     // Update the hex display
     if (colorType === 'primary' && this.hasPrimaryColorHexTarget) {
@@ -202,8 +375,8 @@ export default class extends Controller {
       this.secondaryColorHexTarget.textContent = hex
     }
     
-    // Update the data attribute
-    colorSwatch.dataset.currentColor = hex
+    // Update hex input fields
+    this.updateHexInput(colorType, hex)
     
     // Save to server
     this.saveColorToServer(colorType, hex)
@@ -211,6 +384,11 @@ export default class extends Controller {
 
   // Color conversion utilities
   hslToHex(h, s, l) {
+    // Ensure values are within valid ranges
+    h = Math.max(0, Math.min(360, h))
+    s = Math.max(0, Math.min(100, s))
+    l = Math.max(0, Math.min(100, l))
+    
     h /= 360
     s /= 100
     l /= 100
@@ -234,9 +412,14 @@ export default class extends Controller {
       r = c; g = 0; b = x
     }
     
-    const rHex = Math.round((r + m) * 255).toString(16).padStart(2, '0')
-    const gHex = Math.round((g + m) * 255).toString(16).padStart(2, '0')
-    const bHex = Math.round((b + m) * 255).toString(16).padStart(2, '0')
+    // Ensure RGB values are within valid ranges and convert to hex
+    const rVal = Math.max(0, Math.min(255, Math.round((r + m) * 255)))
+    const gVal = Math.max(0, Math.min(255, Math.round((g + m) * 255)))
+    const bVal = Math.max(0, Math.min(255, Math.round((b + m) * 255)))
+    
+    const rHex = rVal.toString(16).padStart(2, '0')
+    const gHex = gVal.toString(16).padStart(2, '0')
+    const bHex = bVal.toString(16).padStart(2, '0')
     
     return `#${rHex}${gHex}${bHex}`
   }
@@ -288,7 +471,6 @@ export default class extends Controller {
   saveColorToServer(colorType, color) {
     // This method would typically make an AJAX call to save the color
     // For now, we'll just log it to the console
-    console.log(`Saving ${colorType} color: ${color}`)
     
     // Example AJAX call (uncomment and modify as needed):
     /*
