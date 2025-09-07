@@ -33,4 +33,12 @@ module OrganizationHelper
       }
     ]
   end
+
+  def org_primary_color
+    @organization.organization_brand_asset.primary_color || '#3B82F6'
+  end
+
+  def org_secondary_color
+    @organization.organization_profile.secondary_color || '#60A5FA'
+  end
 end

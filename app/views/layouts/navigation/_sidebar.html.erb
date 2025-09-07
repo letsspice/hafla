@@ -22,9 +22,11 @@
   </nav>
 
   <div class="p-4 space-y-4">
-    <%= link_to settings_organization_admin_organization_path(@organization), class: "flex items-center space-x-3" do %>
-      <i class="fas fa-cog"></i>
-      <span>Settings</span>
+    <% if @organization.present? %>
+      <%= link_to settings_organization_admin_organization_path(@organization.slug), class: "flex items-center space-x-3" do %>
+        <i class="fas fa-cog"></i>
+        <span>Settings</span>
+      <% end %>
     <% end %>
   </div>
 </aside>
