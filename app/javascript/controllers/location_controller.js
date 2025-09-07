@@ -100,7 +100,6 @@ export default class extends Controller {
       })
 
       const data = await res.json()
-      console.log('Phone Code', data.data)
       this.phoneCodeTarget.value = data.data.dial_code
     }
     catch (err) {

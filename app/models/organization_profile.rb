@@ -34,6 +34,7 @@ class OrganizationProfile < ApplicationRecord
                     format: { with: /\A\d{7,15}\z/, message: 'must be between 7 and 15 digits' },
                     uniqueness: { scope: :phone_code }
   validates :timezone, presence: true
+  validates :description, length: { maximum: 1000 }, allow_blank: true
 
   # callbacks
   before_validation :normalize_phone

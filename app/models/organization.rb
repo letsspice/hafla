@@ -29,7 +29,9 @@ class Organization < ApplicationRecord
   # associations
   belongs_to :user
   has_one :organization_profile, dependent: :destroy
+  has_one :organization_brand_asset, dependent: :destroy
   accepts_nested_attributes_for :organization_profile
+  accepts_nested_attributes_for :organization_brand_asset
 
   # validations
   validates :name, presence: true, uniqueness: { scope: :user_id }
@@ -37,6 +39,7 @@ class Organization < ApplicationRecord
 
   # callbacks
   before_validation :set_subdomain
+  before_create :set_organization_brand_asset
 
   # instance methods
   def initials
@@ -52,5 +55,11 @@ class Organization < ApplicationRecord
     candidate = base_subdomain
     candidate = "#{base_subdomain}-#{SecureRandom.hex(4)}" while Organization.exists?(subdomain: candidate)
     self.subdomain = candidate
+  end
+
+  def set_organization_brand_asset
+    return if organization_brand_asset.present?
+
+    self.organization_brand_asset = OrganizationBrandAsset.new
   end
 end

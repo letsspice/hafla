@@ -1,0 +1,55 @@
+<div class="flex bg-gray-50" data-controller="settings">
+  <!-- Left Sidebar Navigation -->
+  <div class="w-64 min-h-[80%] fixed bg-white border rounded mt-8 border-gray-200 flex flex-col text-xs">
+    <!-- Organization Header -->
+    <div class="p-4 border-b border-gray-200">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background-color: <%= org_primary_color %>">
+          <span class="text-white  font-semibold"><%= @organization.initials %></span>
+        </div>
+        <div>
+          <h3 class="font-semibold text-gray-900"><%= @organization.name %></h3>
+          <%= link_to @organization.subdomain + ".hafla.com", organization_url(@organization), class: " text-gray-500", target: "_blank" %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Links -->
+    <nav class="flex-1 p-4 space-y-1">
+      <a href="#profile" class="flex items-center px-3 py-2  font-medium text-gray-900 bg-gray-100 rounded-md" data-action="click->settings#showSection" data-section="profile" data-settings-target="profileLink">
+        <i class="fas fa-building mr-3 text-gray-500"></i>
+        Profile
+      </a>
+      <a href="#brand-assets" class="flex items-center px-3 py-2  font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md" data-action="click->settings#showSection" data-section="brand-assets" data-settings-target="brandAssetsLink">
+        <i class="fas fa-palette mr-3 text-gray-500"></i>
+        Brand Assets
+      </a>
+    </nav>
+
+    <!-- Admin Footer -->
+    <div class="p-4 border-t border-gray-200">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 bg-gray-600 rounded-lg flex items-center justify-center">
+          <i class="fas fa-user-shield text-white"></i>
+        </div>
+        <div>
+          <h3 class=" font-medium text-gray-900"><%= current_user.role_title %></h3>
+          <p class="text-xs text-gray-500"><%= current_user.email %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="flex-1 overflow-auto ml-64">
+    <!-- Profile Section -->
+    <div id="profile-section" class="p-8" data-settings-target="profileSection">     
+      <%= render 'organization_admin/organizations/settings/organization_profile' %>
+    </div>
+
+    <!-- Brand Assets Section -->
+    <div id="brand-assets-section" class="p-8 hidden" data-settings-target="brandAssetsSection">
+      <%= render 'organization_admin/organizations/settings/organization_brand_assets' %>
+    </div>
+  </div>
+</div>

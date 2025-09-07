@@ -1,0 +1,882 @@
+<%= form_for [:organization_admin, @organization], html: { multipart: true, data: { controller: "brand-assets" } } do |f| %>
+  <%= render 'shared/errors', object: f.object %>
+
+  <!-- Save Button -->
+  <div class="fixed right-8 top-16 p-4">
+    <%= f.submit "Save Changes", 
+        class: "bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 font-medium cursor-pointer",
+        data: { action: "click->settings#updateFormFields" } %>
+  </div>
+  
+  <%= f.fields_for :organization_brand_asset do |brand_form| %>
+    <div class="max-w-4xl mx-auto text-xs">
+      <!-- Logos Section -->
+      <div class="bg-white rounded-lg border border-gray-200 p-6 mb-6">
+        <div class="mb-6">
+          <h2 class="text-sm font-semibold text-gray-900 mb-2">Logo</h2>
+          <p class="text-sm text-gray-600">Used for most common logo applications</p>
+        </div>
+
+        <!-- Default Logo -->
+        <div class="mb-8">
+          <h3 class="text-sm font-medium text-gray-900 mb-3">Default</h3>
+          <label class="block cursor-pointer">
+            <div class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-6 mb-4 hover:border-gray-400 hover:bg-gray-100 transition-colors">
+              <div class="flex items-center justify-center h-32" id="logo-preview">
+                <% if @organization.organization_brand_asset&.logo&.attached? %>
+                  <%= image_tag @organization.organization_brand_asset.logo, class: "max-h-full max-w-full object-contain" %>
+                <% else %>
+                  <div class="text-center">
+                    <i class="fas fa-image mx-auto h-12 w-12 text-gray-400 flex items-center justify-center text-4xl"></i>
+                    <p class="mt-2 text-sm text-gray-600">No logo uploaded</p>
+                    <p class="text-xs text-gray-500 mt-1">Click to upload</p>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+            <%= brand_form.file_field :logo, 
+                class: "hidden", 
+                accept: "image/*",
+                data: { 
+                  action: "change->brand-assets#previewLogo",
+                  target: "brand-assets.logoInput"
+                } %>
+          </label>
+          
+          <div class="flex space-x-3 mb-3">
+            <button type="button" class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    data-action="click->brand-assets#removeLogo">
+              Remove
+            </button>
+          </div>
+          
+          <p class="text-xs text-gray-500">HEIC, WEBP, SVG, PNG, or JPG. Recommended width: 512 pixels minimum.</p>
+        </div>
+      </div>
+
+      <!-- Cover Image Section -->
+      <div class="bg-white rounded-lg border border-gray-200 p-6 mb-6">
+        <div class="mb-6">
+          <h2 class="text-sm font-semibold text-gray-900 mb-2">Cover Image</h2>
+          <p class="text-sm text-gray-600">Used for social media and marketing materials</p>
+        </div>
+
+        <label class="block cursor-pointer">
+          <div class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-6 mb-4 hover:border-gray-400 hover:bg-gray-100 transition-colors">
+            <div class="flex items-center justify-center h-48" id="cover-image-preview">
+              <% if @organization.organization_brand_asset&.cover_image&.attached? %>
+                <%= image_tag @organization.organization_brand_asset.cover_image, class: "max-h-full max-w-full object-cover rounded" %>
+              <% else %>
+                <div class="text-center">
+                  <i class="fas fa-image mx-auto h-12 w-12 text-gray-400 flex items-center justify-center text-4xl"></i>
+                  <p class="mt-2 text-sm text-gray-600">No cover image uploaded</p>
+                  <p class="text-xs text-gray-500 mt-1">Click to upload</p>
+                </div>
+              <% end %>
+            </div>
+          </div>
+          <%= brand_form.file_field :cover_image, 
+              class: "hidden", 
+              accept: "image/*",
+              data: { 
+                action: "change->brand-assets#previewCoverImage",
+                target: "brand-assets.coverImageInput"
+              } %>
+        </label>
+        
+        <div class="flex space-x-3 mb-3">
+          <button type="button" class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  data-action="click->brand-assets#removeCoverImage">
+            Remove
+          </button>
+        </div>
+        
+        <p class="text-xs text-gray-500">HEIC, WEBP, SVG, PNG, or JPG. Recommended: 1200x630 pixels minimum.</p>
+      </div>
+
+      <!-- Slogan Section -->
+      <div class="bg-white rounded-lg border border-gray-200 p-6 mb-6">
+        <div class="mb-6">
+          <h2 class="text-sm font-semibold text-gray-900 mb-2">Slogan</h2>
+          <p class="text-sm text-gray-600">A short, memorable phrase that represents your brand</p>
+        </div>
+        
+        <div class="mb-4">
+          <%= brand_form.text_area :slogan, 
+              rows: 3,
+              class: "w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
+              placeholder: "Enter your brand slogan..." %>
+        </div>
+      </div>
+
+      <!-- Description Section -->
+      <div class="bg-white rounded-lg border border-gray-200 p-6 mb-6">
+        <div class="mb-6">
+          <h2 class="text-sm font-semibold text-gray-900 mb-2">Description</h2>
+          <p class="text-sm text-gray-600">A brief description of your organization and what you do</p>
+        </div>
+        
+        <div class="mb-4">
+          <%= brand_form.text_area :description, 
+              rows: 5,
+              class: "w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
+              placeholder: "Describe your organization..." %>
+        </div>
+      </div>
+
+
+      <!-- Brand Colors Section -->
+      <div class="bg-white rounded-lg border border-gray-200 p-6 mb-6">
+        <div class="mb-6">
+          <h2 class="text-sm font-semibold text-gray-900 mb-2">Colors</h2>
+          <p class="text-sm text-gray-600">The brand colors that appear on your store, social media, and more</p>
+        </div>
+
+        <!-- Primary Colors Section -->
+        <div class="mb-8">
+          <h3 class="text-sm font-medium text-gray-900 mb-4">Primary</h3>
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-4">
+                <div class="relative group">
+                  <div class="w-12 h-12 rounded border border-gray-300 bg-blue-500 cursor-pointer hover:ring-2 hover:ring-blue-300 transition-all duration-200" 
+                      style="background-color: <%= (@organization.organization_brand_asset&.primary_color&.start_with?('#') && @organization.organization_brand_asset&.primary_color&.length == 7) ? @organization.organization_brand_asset&.primary_color.strip : '#3B82F6' %>"
+                      data-color-type="primary"
+                      data-color-role="main-swatch"
+                      data-current-color="<%= (@organization.organization_brand_asset&.primary_color&.start_with?('#') && @organization.organization_brand_asset&.primary_color&.length == 7) ? @organization.organization_brand_asset&.primary_color.strip : '#3B82F6' %>">
+                  </div>
+                  <div class="absolute bottom-0 left-0 w-3 h-3 bg-white rounded-full border border-gray-300"></div>
+                  
+                  <!-- Custom Color Picker Popup -->
+                  <div class="absolute top-full left-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg p-4 z-10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 w-80">
+                    <div class="flex items-center space-x-3 mb-4">
+                      <div class="w-8 h-8 rounded border border-gray-300" style="background-color: <%= @organization.organization_brand_asset&.primary_color || '#3B82F6' %>"></div>
+                      <div>
+                        <p class="text-xs font-medium text-gray-900">Primary color</p>
+                        <p class="text-xs text-gray-500 font-mono"><%= @organization.organization_brand_asset&.primary_color || '#3B82F6' %></p>
+                      </div>
+                    </div>
+                    
+                    <!-- Custom Color Picker -->
+                    <div class="space-y-4">
+                      <!-- Color Palette -->
+                      <div>
+                        <label class="block text-xs text-gray-600 mb-2">Quick Color Selection</label>
+                        <div class="grid grid-cols-8 gap-2">
+                          <!-- Primary Colors -->
+                          <div class="w-8 h-8 bg-red-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#EF4444" 
+                               data-color-type="primary"></div>
+                          <div class="w-8 h-8 bg-orange-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#F97316" 
+                               data-color-type="primary"></div>
+                          <div class="w-8 h-8 bg-yellow-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#EAB308" 
+                               data-color-type="primary"></div>
+                          <div class="w-8 h-8 bg-green-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#22C55E" 
+                               data-color-type="primary"></div>
+                          <div class="w-8 h-8 bg-teal-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#14B8A6" 
+                               data-color-type="primary"></div>
+                          <div class="w-8 h-8 bg-blue-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#3B82F6" 
+                               data-color-type="primary"></div>
+                          <div class="w-8 h-8 bg-indigo-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#6366F1" 
+                               data-color-type="primary"></div>
+                          <div class="w-8 h-8 bg-purple-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#A855F7" 
+                               data-color-type="primary"></div>
+                          
+                          <!-- Additional Colors Row -->
+                          <div class="w-8 h-8 bg-pink-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#EC4899" 
+                               data-color-type="primary"></div>
+                          <div class="w-8 h-8 bg-rose-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#F43F5E" 
+                               data-color-type="primary"></div>
+                          <div class="w-8 h-8 bg-amber-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#F59E0B" 
+                               data-color-type="primary"></div>
+                          <div class="w-8 h-8 bg-lime-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#84CC16" 
+                               data-color-type="primary"></div>
+                          <div class="w-8 h-8 bg-emerald-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#10B981" 
+                               data-color-type="primary"></div>
+                          <div class="w-8 h-8 bg-cyan-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#06B6D4" 
+                               data-color-type="primary"></div>
+                          <div class="w-8 h-8 bg-sky-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#0EA5E9" 
+                               data-color-type="primary"></div>
+                          <div class="w-8 h-8 bg-violet-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#8B5CF6" 
+                               data-color-type="primary"></div>
+                          
+                          <!-- Neutral Colors Row -->
+                          <div class="w-8 h-8 bg-gray-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#6B7280" 
+                               data-color-type="primary"></div>
+                          <div class="w-8 h-8 bg-slate-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#64748B" 
+                               data-color-type="primary"></div>
+                          <div class="w-8 h-8 bg-zinc-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#71717A" 
+                               data-color-type="primary"></div>
+                          <div class="w-8 h-8 bg-neutral-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#737373" 
+                               data-color-type="primary"></div>
+                          <div class="w-8 h-8 bg-stone-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#78716C" 
+                               data-color-type="primary"></div>
+                          <div class="w-8 h-8 bg-red-600 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#DC2626" 
+                               data-color-type="primary"></div>
+                          <div class="w-8 h-8 bg-blue-600 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#2563EB" 
+                               data-color-type="primary"></div>
+                          <div class="w-8 h-8 bg-green-600 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#16A34A" 
+                               data-color-type="primary"></div>
+                        </div>
+                      </div>
+                      
+                      <!-- Advanced Color Picker -->
+                      <div>
+                        <label class="block text-xs text-gray-600 mb-2">Advanced Color Selection</label>
+                        <div class="space-y-3">
+                          <!-- Hue Slider -->
+                          <div class="relative">
+                            <div class="w-full h-6 bg-gradient-to-r from-red-500 via-yellow-500 via-green-500 via-blue-500 via-purple-500 to-red-500 rounded cursor-pointer"
+                                data-action="click->settings#selectHue"
+                                data-color-type="primary">
+                              <div class="absolute w-3 h-3 bg-white border-2 border-gray-800 rounded-full -top-1" 
+                                  style="left: 70%;"
+                                  data-settings-target="primaryHueHandle"></div>
+                            </div>
+                          </div>
+                          
+                          <!-- Saturation/Lightness Picker -->
+                          <div class="relative">
+                            <div class="w-full h-32 bg-gradient-to-br from-white via-blue-400 to-black rounded cursor-crosshair" 
+                                data-action="mousedown->settings#startColorDrag"
+                                data-color-type="primary">
+                              <div class="absolute w-3 h-3 bg-white border-2 border-gray-800 rounded-full cursor-move" 
+                                  style="left: 70%; top: 30%;"
+                                  data-settings-target="primaryColorHandle"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <!-- Color Input Fields -->
+                      <div class="space-y-3">
+                        <!-- Hex Code Input -->
+                        <div>
+                          <label class="block text-xs text-gray-600 mb-1">Hex Code</label>
+                          <%= brand_form.text_field :primary_color, 
+                              class: "w-full text-xs border border-gray-300 rounded px-2 py-1 text-center font-mono",
+                              value: (@organization.organization_brand_asset&.primary_color&.start_with?('#') && @organization.organization_brand_asset&.primary_color&.length == 7) ? @organization.organization_brand_asset&.primary_color.strip : '#3B82F6',
+                              data: { 
+                                action: "input->settings#updateHex",
+                                colorType: "primary",
+                                inputType: "hex"
+                              },
+                              placeholder: "#3B82F6" %>
+                        </div>
+                        
+                        <!-- RGB Inputs -->
+                        <div class="grid grid-cols-3 gap-2">
+                          <div>
+                            <label class="block text-xs text-gray-600 mb-1">R</label>
+                            <input type="number" min="0" max="255" class="w-full text-xs border border-gray-300 rounded px-2 py-1 text-center"
+                                   data-action="input->settings#updateRGB"
+                                   data-color-type="primary"
+                                   data-rgb="r"
+                                   value="59">
+                          </div>
+                          <div>
+                            <label class="block text-xs text-gray-600 mb-1">G</label>
+                            <input type="number" min="0" max="255" class="w-full text-xs border border-gray-300 rounded px-2 py-1 text-center"
+                                   data-action="input->settings#updateRGB"
+                                   data-color-type="primary"
+                                   data-rgb="g"
+                                   value="130">
+                          </div>
+                          <div>
+                            <label class="block text-xs text-gray-600 mb-1">B</label>
+                            <input type="number" min="0" max="255" class="w-full text-xs border border-gray-300 rounded px-2 py-1 text-center"
+                                   data-action="input->settings#updateRGB"
+                                   data-color-type="primary"
+                                   data-rgb="b"
+                                   value="246">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <p class="text-sm font-medium text-gray-900">Primary color</p>
+                  <p class="text-sm text-gray-500 font-mono" data-settings-target="primaryColorHex">
+                    <%= (@organization.organization_brand_asset&.primary_color&.start_with?('#') && @organization.organization_brand_asset&.primary_color&.length == 7) ? @organization.organization_brand_asset&.primary_color.strip : '#3B82F6' %>
+                  </p>
+                </div>
+              </div>
+              <button type="button" class="text-red-600 hover:text-red-700 text-sm font-medium">Remove</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Secondary Colors Section -->
+        <div>
+          <h3 class="text-sm font-medium text-gray-900 mb-4">Secondary</h3>
+          <p class="text-sm text-gray-600 mb-4">Supporting colors used for accents and additional detail</p>
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-4">
+                <div class="relative group">
+                  <div class="w-12 h-12 rounded border border-gray-300 bg-purple-500 cursor-pointer hover:ring-2 hover:ring-blue-300 transition-all duration-200" 
+                      style="background-color: <%= (@organization.organization_brand_asset&.secondary_color&.start_with?('#') && @organization.organization_brand_asset&.secondary_color&.length == 7) ? @organization.organization_brand_asset&.secondary_color.strip : '#8B5CF6' %>"
+                      data-color-type="secondary"
+                      data-color-role="main-swatch"
+                      data-current-color="<%= (@organization.organization_brand_asset&.secondary_color&.start_with?('#') && @organization.organization_brand_asset&.secondary_color&.length == 7) ? @organization.organization_brand_asset&.secondary_color.strip : '#8B5CF6' %>">
+                  </div>
+                  <div class="absolute bottom-0 left-0 w-3 h-3 bg-white rounded-full border border-gray-300"></div>
+                  
+                  <!-- Custom Color Picker Popup -->
+                  <div class="absolute top-full left-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg p-4 z-10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 w-80">
+                    <div class="flex items-center space-x-3 mb-4">
+                      <div class="w-8 h-8 rounded border border-gray-300" style="background-color: <%= @organization.organization_brand_asset&.secondary_color || '#8B5CF6' %>"></div>
+                      <div>
+                        <p class="text-xs font-medium text-gray-900">Secondary color 1</p>
+                        <p class="text-xs text-gray-500 font-mono"><%= @organization.organization_brand_asset&.secondary_color || '#8B5CF6' %></p>
+                      </div>
+                    </div>
+                    
+                    <!-- Custom Color Picker -->
+                    <div class="space-y-4">
+                      <!-- Color Palette -->
+                      <div>
+                        <label class="block text-xs text-gray-600 mb-2">Quick Color Selection</label>
+                        <div class="grid grid-cols-8 gap-2">
+                          <!-- Primary Colors -->
+                          <div class="w-8 h-8 bg-red-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#EF4444" 
+                               data-color-type="secondary"></div>
+                          <div class="w-8 h-8 bg-orange-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#F97316" 
+                               data-color-type="secondary"></div>
+                          <div class="w-8 h-8 bg-yellow-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#EAB308" 
+                               data-color-type="secondary"></div>
+                          <div class="w-8 h-8 bg-green-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#22C55E" 
+                               data-color-type="secondary"></div>
+                          <div class="w-8 h-8 bg-teal-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#14B8A6" 
+                               data-color-type="secondary"></div>
+                          <div class="w-8 h-8 bg-blue-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#3B82F6" 
+                               data-color-type="secondary"></div>
+                          <div class="w-8 h-8 bg-indigo-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#6366F1" 
+                               data-color-type="secondary"></div>
+                          <div class="w-8 h-8 bg-purple-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#A855F7" 
+                               data-color-type="secondary"></div>
+                          
+                          <!-- Additional Colors Row -->
+                          <div class="w-8 h-8 bg-pink-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#EC4899" 
+                               data-color-type="secondary"></div>
+                          <div class="w-8 h-8 bg-rose-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#F43F5E" 
+                               data-color-type="secondary"></div>
+                          <div class="w-8 h-8 bg-amber-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#F59E0B" 
+                               data-color-type="secondary"></div>
+                          <div class="w-8 h-8 bg-lime-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#84CC16" 
+                               data-color-type="secondary"></div>
+                          <div class="w-8 h-8 bg-emerald-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#10B981" 
+                               data-color-type="secondary"></div>
+                          <div class="w-8 h-8 bg-cyan-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#06B6D4" 
+                               data-color-type="secondary"></div>
+                          <div class="w-8 h-8 bg-sky-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#0EA5E9" 
+                               data-color-type="secondary"></div>
+                          <div class="w-8 h-8 bg-violet-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#8B5CF6" 
+                               data-color-type="secondary"></div>
+                          
+                          <!-- Neutral Colors Row -->
+                          <div class="w-8 h-8 bg-gray-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#6B7280" 
+                               data-color-type="secondary"></div>
+                          <div class="w-8 h-8 bg-slate-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#64748B" 
+                               data-color-type="secondary"></div>
+                          <div class="w-8 h-8 bg-zinc-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#71717A" 
+                               data-color-type="secondary"></div>
+                          <div class="w-8 h-8 bg-neutral-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#737373" 
+                               data-color-type="secondary"></div>
+                          <div class="w-8 h-8 bg-stone-500 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#78716C" 
+                               data-color-type="secondary"></div>
+                          <div class="w-8 h-8 bg-red-600 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#DC2626" 
+                               data-color-type="secondary"></div>
+                          <div class="w-8 h-8 bg-blue-600 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#2563EB" 
+                               data-color-type="secondary"></div>
+                          <div class="w-8 h-8 bg-green-600 rounded cursor-pointer hover:scale-110 transition-transform border-2 border-white shadow-sm" 
+                               data-action="click->settings#selectPresetColor" 
+                               data-color="#16A34A" 
+                               data-color-type="secondary"></div>
+                        </div>
+                      </div>
+                      
+                      <!-- Advanced Color Picker -->
+                      <div>
+                        <label class="block text-xs text-gray-600 mb-2">Advanced Color Selection</label>
+                        <div class="space-y-3">
+                          <!-- Hue Slider -->
+                          <div class="relative">
+                            <div class="w-full h-6 bg-gradient-to-r from-red-500 via-yellow-500 via-green-500 via-blue-500 via-purple-500 to-red-500 rounded cursor-pointer"
+                                data-action="click->settings#selectHue"
+                                data-color-type="secondary">
+                              <div class="absolute w-3 h-3 bg-white border-2 border-gray-800 rounded-full -top-1" 
+                                  style="left: 80%;"
+                                  data-settings-target="secondaryHueHandle"></div>
+                            </div>
+                          </div>
+                          
+                          <!-- Saturation/Lightness Picker -->
+                          <div class="relative">
+                            <div class="w-full h-32 bg-gradient-to-br from-white via-purple-400 to-black rounded cursor-crosshair" 
+                                data-action="mousedown->settings#startColorDrag"
+                                data-color-type="secondary">
+                              <div class="absolute w-3 h-3 bg-white border-2 border-gray-800 rounded-full cursor-move" 
+                                  style="left: 70%; top: 30%;"
+                                  data-settings-target="secondaryColorHandle"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <!-- Color Input Fields -->
+                      <div class="space-y-3">
+                        <!-- Hex Code Input -->
+                        <div>
+                          <label class="block text-xs text-gray-600 mb-1">Hex Code</label>
+                          <%= brand_form.text_field :secondary_color, 
+                              class: "w-full text-xs border border-gray-300 rounded px-2 py-1 text-center font-mono",
+                              value: (@organization.organization_brand_asset&.secondary_color&.start_with?('#') && @organization.organization_brand_asset&.secondary_color&.length == 7) ? @organization.organization_brand_asset&.secondary_color.strip : '#8B5CF6',
+                              data: { 
+                                action: "input->settings#updateHex",
+                                colorType: "secondary",
+                                inputType: "hex"
+                              },
+                              placeholder: "#8B5CF6" %>
+                        </div>
+                        
+                        <!-- RGB Input Fields -->
+                        <div class="grid grid-cols-3 gap-3">
+                          <div>
+                            <label class="block text-xs text-gray-600 mb-1">R</label>
+                            <input type="number" min="0" max="255" value="139" 
+                                  class="w-full text-xs border border-gray-300 rounded px-2 py-1 text-center"
+                                  data-action="input->settings#updateRGB"
+                                  data-color-type="secondary"
+                                  data-rgb="r">
+                          </div>
+                          <div>
+                            <label class="block text-xs text-gray-600 mb-1">G</label>
+                            <input type="number" min="0" max="255" value="92" 
+                                  class="w-full text-xs border border-gray-300 rounded px-2 py-1 text-center"
+                                  data-action="input->settings#updateRGB"
+                                  data-color-type="secondary"
+                                  data-rgb="g">
+                          </div>
+                          <div>
+                            <label class="block text-xs text-gray-600 mb-1">B</label>
+                            <input type="number" min="0" max="255" value="246" 
+                                  class="w-full text-xs border border-gray-300 rounded px-2 py-1 text-center"
+                                  data-action="input->settings#updateRGB"
+                                  data-color-type="secondary"
+                                  data-rgb="b">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <p class="text-sm font-medium text-gray-900">Secondary color 1</p>
+                  <p class="text-sm text-gray-500 font-mono" data-settings-target="secondaryColorHex">
+                    <%= (@organization.organization_brand_asset&.secondary_color&.start_with?('#') && @organization.organization_brand_asset&.secondary_color&.length == 7) ? @organization.organization_brand_asset&.secondary_color.strip : '#8B5CF6' %>
+                  </p>
+                </div>
+              </div>
+              <button type="button" class="text-red-600 hover:text-red-700 text-sm font-medium">Remove</button>
+            </div>
+          </div>
+        </div>
+      
+      </div>
+      <!-- Social Links Section -->
+      <div class="bg-white rounded-lg border border-gray-200 p-6 mb-6" data-controller="social-links">
+        <div class="mb-6">
+          <h2 class="text-xl font-semibold text-gray-900 mb-2">Social links</h2>
+          <p class="text-sm text-gray-600">Social links for your business, often used in the theme footer</p>
+        </div>
+
+        <!-- Add Social Link Button -->
+        <div class="mb-6 relative" data-controller="social-dropdown">
+          <button type="button" 
+                  class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 flex items-center space-x-2"
+                  data-action="click->social-dropdown#toggle">
+            <span>Add social link</span>
+            <i class="fas fa-chevron-down w-4 h-4 transition-transform duration-200" 
+              data-social-dropdown-target="icon"></i>
+          </button>
+          
+          <!-- Dropdown Menu -->
+          <div class="absolute top-full left-0 mt-1 w-64 bg-white border border-gray-200 rounded-md shadow-lg z-20 opacity-0 invisible transition-all duration-200 max-h-80 overflow-y-auto"
+              data-social-dropdown-target="menu">
+            
+            <!-- Instagram -->
+            <button type="button" class="w-full flex items-center space-x-3 px-4 py-3 text-left hover:bg-gray-50 border-b border-gray-100 last:border-b-0"
+                    data-action="click->social-dropdown#selectSocialLink"
+                    data-platform="instagram">
+              <div class="w-5 h-5 bg-gradient-to-br from-purple-600 to-pink-600 rounded-full flex items-center justify-center">
+                <i class="fab fa-instagram w-3 h-3 text-white"></i>
+              </div>
+              <span class="text-sm font-medium text-gray-900">Instagram</span>
+            </button>
+
+            <!-- LinkedIn -->
+            <button type="button" class="w-full flex items-center space-x-3 px-4 py-3 text-left hover:bg-gray-50 border-b border-gray-100 last:border-b-0"
+                    data-action="click->social-dropdown#selectSocialLink"
+                    data-platform="linkedin">
+              <div class="w-5 h-5 bg-blue-600 rounded flex items-center justify-center">
+                <i class="fab fa-linkedin w-3 h-3 text-white"></i>
+              </div>
+              <span class="text-sm font-medium text-gray-900">LinkedIn</span>
+            </button>
+
+            <!-- Pinterest -->
+            <button type="button" class="w-full flex items-center space-x-3 px-4 py-3 text-left hover:bg-gray-50 border-b border-gray-100 last:border-b-0"
+                    data-action="click->social-dropdown#selectSocialLink"
+                    data-platform="pinterest">
+              <div class="w-5 h-5 bg-red-600 rounded flex items-center justify-center">
+                <i class="fab fa-pinterest w-3 h-3 text-white"></i>
+              </div>
+              <span class="text-sm font-medium text-gray-900">Pinterest</span>
+            </button>
+
+            <!-- Snapchat -->
+            <button type="button" class="w-full flex items-center space-x-3 px-4 py-3 text-left hover:bg-gray-50 border-b border-gray-100 last:border-b-0"
+                    data-action="click->social-dropdown#selectSocialLink"
+                    data-platform="snapchat">
+              <div class="w-5 h-5 bg-yellow-400 rounded flex items-center justify-center">
+                <i class="fab fa-snapchat w-3 h-3 text-white"></i>
+              </div>
+              <span class="text-sm font-medium text-gray-900">Snapchat</span>
+            </button>
+
+            <!-- WhatsApp -->
+            <button type="button" class="w-full flex items-center space-x-3 px-4 py-3 text-left hover:bg-gray-50 border-b border-gray-100 last:border-b-0"
+                    data-action="click->social-dropdown#selectSocialLink"
+                    data-platform="whatsapp">
+              <div class="w-5 h-5 bg-green-500 rounded flex items-center justify-center">
+                <i class="fab fa-whatsapp w-3 h-3 text-white"></i>
+              </div>
+              <span class="text-sm font-medium text-gray-900">WhatsApp</span>
+            </button>
+
+            <!-- Discord -->
+            <button type="button" class="w-full flex items-center space-x-3 px-4 py-3 text-left hover:bg-gray-50 border-b border-gray-100 last:border-b-0"
+                    data-action="click->social-dropdown#selectSocialLink"
+                    data-platform="discord">
+              <div class="w-5 h-5 bg-indigo-600 rounded flex items-center justify-center">
+                    <i class="fab fa-discord w-3 h-3 text-white"></i>
+              </div>
+              <span class="text-sm font-medium text-gray-900">Discord</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Social Media Links Container -->
+        <div class="space-y-6" data-social-links-target="container">
+          <!-- Facebook -->
+          <div class="flex items-start justify-between social-platform-item" data-social-platform="facebook">
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-gray-900 mb-2">Facebook</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <i class="fab fa-facebook h-5 w-5 text-blue-600"></i>
+                </div>
+                <%= brand_form.text_field :facebook_url, 
+                    type: "url",
+                    class: "w-full text-sm border border-gray-300 rounded-md pl-10 pr-3 py-2 social-url-input", 
+                    placeholder: "https://facebook.com/hafla" %>
+              </div>
+            </div>
+            <button type="button" class="ml-4 text-red-600 hover:text-red-700 text-sm font-medium mt-8 remove-platform-btn" 
+                    data-platform="facebook"
+                    data-action="click->social-links#removePlatform">Remove</button>
+          </div>
+
+          <!-- X (Twitter) -->
+          <div class="flex items-start justify-between social-platform-item" data-social-platform="twitter">
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-gray-900 mb-2">X</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <i class="fab fa-x-twitter h-5 w-5 text-gray-900"></i>
+                </div>
+                <%= brand_form.text_field :twitter_url, 
+                    type: "url",
+                    class: "w-full text-sm border border-gray-300 rounded-md pl-10 pr-3 py-2 social-url-input", 
+                    placeholder: "https://x.com/hafla" %>
+              </div>
+            </div>
+            <button type="button" class="ml-4 text-red-600 hover:text-red-700 text-sm font-medium mt-8 remove-platform-btn" 
+                    data-platform="twitter"
+                    data-action="click->social-links#removePlatform">Remove</button>
+          </div>
+
+          <!-- TikTok -->
+          <div class="flex items-start justify-between social-platform-item" data-social-platform="tiktok">
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-gray-900 mb-2">TikTok</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <i class="fab fa-tiktok h-5 w-5 text-black"></i>
+                </div>
+                <%= brand_form.text_field :tiktok_url, 
+                    type: "url",
+                    class: "w-full text-sm border border-gray-300 rounded-md pl-10 pr-3 py-2 social-url-input", 
+                    placeholder: "https://tiktok.com/@hafla" %>
+              </div>
+            </div>
+            <button type="button" class="ml-4 text-red-600 hover:text-red-700 text-sm font-medium mt-8 remove-platform-btn" 
+                    data-platform="tiktok"
+                    data-action="click->social-links#removePlatform">Remove</button>
+          </div>
+
+          <!-- YouTube -->
+          <div class="flex items-start justify-between social-platform-item" data-social-platform="youtube">
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-gray-900 mb-2">YouTube</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <i class="fab fa-youtube h-5 w-5 text-red-600"></i>
+                </div>
+                <%= brand_form.text_field :youtube_url, 
+                    type: "url",
+                    class: "w-full text-sm border border-gray-300 rounded-md pl-10 pr-3 py-2 social-url-input", 
+                    placeholder: "https://youtube.com/c/hafla" %>
+              </div>
+            </div>
+            <button type="button" class="ml-4 text-red-600 hover:text-red-700 text-sm font-medium mt-8 remove-platform-btn" 
+                    data-platform="youtube"
+                    data-action="click->social-links#removePlatform">Remove</button>
+          </div>
+
+          <!-- Instagram -->
+          <div class="flex items-start justify-between social-platform-item hidden" data-social-platform="instagram">
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-gray-900 mb-2">Instagram</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <i class="fab fa-instagram h-5 w-5 text-pink-600"></i>
+                </div>
+                <%= brand_form.text_field :instagram_url, 
+                    type: "url",
+                    class: "w-full text-sm border border-gray-300 rounded-md pl-10 pr-3 py-2 social-url-input", 
+                    placeholder: "https://instagram.com/username" %>
+              </div>
+            </div>
+            <button type="button" class="ml-4 text-red-600 hover:text-red-700 text-sm font-medium mt-8 remove-platform-btn" 
+                    data-platform="instagram"
+                    data-action="click->social-links#removePlatform">Remove</button>
+          </div>
+
+          <!-- LinkedIn -->
+          <div class="flex items-start justify-between social-platform-item hidden" data-social-platform="linkedin">
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-gray-900 mb-2">LinkedIn</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <i class="fab fa-linkedin h-5 w-5 text-blue-600"></i>
+                </div>
+                <%= brand_form.text_field :linkedin_url, 
+                    type: "url",
+                    class: "w-full text-sm border border-gray-300 rounded-md pl-10 pr-3 py-2 social-url-input", 
+                    placeholder: "https://linkedin.com/company/company-name" %>
+              </div>
+            </div>
+            <button type="button" class="ml-4 text-red-600 hover:text-red-700 text-sm font-medium mt-8 remove-platform-btn" 
+                    data-platform="linkedin"
+                    data-action="click->social-links#removePlatform">Remove</button>
+          </div>
+
+          <!-- Pinterest -->
+          <div class="flex items-start justify-between social-platform-item hidden" data-social-platform="pinterest">
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-gray-900 mb-2">Pinterest</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <i class="fab fa-pinterest h-5 w-5 text-red-600"></i>
+                </div>
+                <%= brand_form.text_field :pinterest_url, 
+                    type: "url",
+                    class: "w-full text-sm border border-gray-300 rounded-md pl-10 pr-3 py-2 social-url-input", 
+                    placeholder: "https://pinterest.com/username" %>
+              </div>
+            </div>
+            <button type="button" class="ml-4 text-red-600 hover:text-red-700 text-sm font-medium mt-8 remove-platform-btn" 
+                    data-platform="pinterest"
+                    data-action="click->social-links#removePlatform">Remove</button>
+          </div>
+
+          <!-- Snapchat -->
+          <div class="flex items-start justify-between social-platform-item hidden" data-social-platform="snapchat">
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-gray-900 mb-2">Snapchat</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <i class="fab fa-snapchat h-5 w-5 text-yellow-400"></i>
+                </div>
+                <%= brand_form.text_field :snapchat_url, 
+                    type: "url",
+                    class: "w-full text-sm border border-gray-300 rounded-md pl-10 pr-3 py-2 social-url-input", 
+                    placeholder: "https://snapchat.com/add/username" %>
+              </div>
+            </div>
+            <button type="button" class="ml-4 text-red-600 hover:text-red-700 text-sm font-medium mt-8 remove-platform-btn" 
+                    data-platform="snapchat"
+                    data-action="click->social-links#removePlatform">Remove</button>
+          </div>
+
+          <!-- WhatsApp -->
+          <div class="flex items-start justify-between social-platform-item hidden" data-social-platform="whatsapp">
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-gray-900 mb-2">WhatsApp</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <i class="fab fa-whatsapp h-5 w-5 text-green-500"></i>
+                </div>
+                <%= brand_form.text_field :whatsapp_url, 
+                    type: "url",
+                    class: "w-full text-sm border border-gray-300 rounded-md pl-10 pr-3 py-2 social-url-input", 
+                    placeholder: "https://wa.me/phone-number" %>
+              </div>
+            </div>
+            <button type="button" class="ml-4 text-red-600 hover:text-red-700 text-sm font-medium mt-8 remove-platform-btn" 
+                    data-platform="whatsapp"
+                    data-action="click->social-links#removePlatform">Remove</button>
+          </div>
+
+          <!-- Discord -->
+          <div class="flex items-start justify-between social-platform-item hidden" data-social-platform="discord">
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-gray-900 mb-2">Discord</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <i class="fab fa-discord h-5 w-5 text-indigo-600"></i>
+                </div>
+                <%= brand_form.text_field :discord_url, 
+                    type: "url",
+                    class: "w-full text-sm border border-gray-300 rounded-md pl-10 pr-3 py-2 social-url-input", 
+                    placeholder: "https://discord.gg/invite-code" %>
+              </div>
+            </div>
+            <button type="button" class="ml-4 text-red-600 hover:text-red-700 text-sm font-medium mt-8 remove-platform-btn" 
+                    data-platform="discord"
+                    data-action="click->social-links#removePlatform">Remove</button>
+          </div>
+
+          <!-- Template for new social platforms (hidden) -->
+          <template data-social-links-target="template">
+            <div class="flex items-start justify-between social-platform-item">
+              <div class="flex-1">
+                <label class="block text-sm font-medium text-gray-900 mb-2">
+                  <span class="platform-name">Platform Name</span>
+                </label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <div class="w-5 h-5 rounded-full flex items-center justify-center platform-icon">
+                      <i class="fas fa-link text-white"></i>
+                    </div>
+                  </div>
+                  <input type="url" 
+                        class="w-full text-sm border border-gray-300 rounded-md pl-10 pr-3 py-2 social-url-input" 
+                        placeholder="Enter URL...">
+                </div>
+              </div>
+              <button type="button" class="ml-4 text-red-600 hover:text-red-700 text-sm font-medium mt-8 remove-platform-btn" 
+                      data-action="click->social-links#removePlatform">Remove</button>
+            </div>
+          </template>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>
