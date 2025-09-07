@@ -59,7 +59,7 @@ class Organization < ApplicationRecord
 
   def set_organization_brand_asset
     return if organization_brand_asset.present?
-    
+
     self.organization_brand_asset = OrganizationBrandAsset.new
   end
 end

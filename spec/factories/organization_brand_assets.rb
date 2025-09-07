@@ -34,24 +34,24 @@
 FactoryBot.define do
   factory :organization_brand_assets do
     association :organization
-    
+
     # Colors
     primary_color { '#FF0000' }
     secondary_color { '#00FF00' }
-    
+
     # Description and slogan
     description { 'A leading organization in the industry' }
     slogan { 'Excellence in everything we do' }
-    
+
     # Social media links
     instagram_url { 'https://instagram.com/organization' }
     twitter_url { 'https://twitter.com/organization' }
     facebook_url { 'https://facebook.com/organization' }
     linkedin_url { 'https://linkedin.com/company/organization' }
-    
+
     # Logo and cover image attachments will be added in tests as needed
     # since they require actual file attachments
-    
+
     trait :with_logo do
       after(:build) do |brand_assets|
         brand_assets.logo_png_file.attach(
@@ -61,7 +61,7 @@ FactoryBot.define do
         )
       end
     end
-    
+
     trait :with_cover_image do
       after(:build) do |brand_assets|
         brand_assets.cover_image_png_file.attach(
@@ -71,7 +71,7 @@ FactoryBot.define do
         )
       end
     end
-    
+
     trait :complete do
       with_logo
       with_cover_image
